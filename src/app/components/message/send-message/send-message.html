@@ -1,0 +1,33 @@
+<div class="page-container send-message-page">
+  <div class="card-base send-message-card">
+
+    @if (receiver()) {
+    <h1 class="title-section">
+      Mensaje a <span class="title-highlight">@{{ receiver()?.nick }}</span>
+    </h1>
+
+    @if (sent) {
+    <p class="send-success">¡Mensaje enviado correctamente!</p>
+    }
+
+    @if (!sent) {
+    <div class="send-form">
+      <textarea
+        class="input-base send-textarea"
+        [(ngModel)]="messageText"
+        placeholder="Escribe tu mensaje..."
+        rows="5">
+      </textarea>
+
+      @if (errorMessage) {
+      <p class="form-error">{{ errorMessage }}</p>
+      }
+
+      <button class="btn btn-primary" (click)="sendMessage()" [disabled]="sending">
+        {{ sending ? 'Enviando...' : 'Enviar mensaje' }}
+      </button>
+    </div>
+    }
+    }
+  </div>
+</div>

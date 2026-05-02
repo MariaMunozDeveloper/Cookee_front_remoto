@@ -1,0 +1,134 @@
+<div class="page-container explore-page">
+
+  <div class="explore-header">
+    <h1 class="title-section">
+      Para <span class="title-highlight">ti</span>
+    </h1>
+    <p class="subtitle">Descubre recetas de toda la comunidad Cookee</p>
+  </div>
+
+  <div class="explore-controls">
+
+    <div class="explore-search">
+      <div class="nick-input-wrap">
+        <input
+          class="input-base nick-input explore-search-input"
+          [(ngModel)]="hashtagInput"
+          placeholder=" Buscar recetas o #hashtags..."
+          (keyup.enter)="buscarHashtag()"/>
+      </div>
+      <button class="btn btn-primary" (click)="buscarHashtag()">Buscar</button>
+      @if (searchHashtag || search) {
+      <button class="btn btn-ghost" (click)="clearHashtag()">✕ {{ searchHashtag || search }}</button>
+      }
+    </div>
+
+    <div class="explore-sort">
+      <button class="explore-sort-btn" [class.explore-sort-active]="sortBy === 'recent'"
+              (click)="setSort('recent')">Recientes
+      </button>
+      <button class="explore-sort-btn" [class.explore-sort-active]="sortBy === 'likes'"
+              (click)="setSort('likes')">Más me gusta
+      </button>
+      <button class="explore-sort-btn" [class.explore-sort-active]="sortBy === 'views'"
+              (click)="setSort('views')">Más visitadas
+      </button>
+    </div>
+  </div>
+
+  @if (!loading() && publications().length === 0) {
+  <div class="explore-empty">
+    <p>No hay recetas que coincidan con tu búsqueda.</p>
+  </div>
+  }
+
+  <div class="explore-grid">
+    @for (pub of publications(); track pub._id) {
+    <article class="explore-card" [routerLink]="['/publication', pub._id]">
+
+      <div class="explore-card-cover">
+        @if (getCover(pub)) {
+        <img [src]="getCover(pub)" [alt]="pub.title" class="explore-card-img"/>
+        } @else {
+        <div class="explore-card-placeholder"></div>
+        }
+
+        @if (pub.hashtags && pub.hashtags.length > 0) {
+        @if (searchHashtag) {
+        <span class="explore-card-tag">{{ searchHashtag | uppercase }}</span>
+        } @else {
+        <span class="explore-card-tag">#{{ pub.hashtags[0] | uppercase }}</span>
+        }
+        }
+
+        @if (isLoggedIn) {
+        <button class="favorite-btn" (click)="favoriteService.toggleFavorite(pub._id); $event.stopPropagation()">
+          <img
+            [src]="favoriteService.isFavorite(pub._id) ? 'icons/favorito (1).svg' : 'icons/favorito.svg'"
+            class="favorite-btn-icon" alt="favorito"/>
+        </button>
+        }
+      </div>
+
+      <div class="explore-card-body">
+        <h3 class="explore-card-title">{{ pub.title }}</h3>
+
+        <div class="explore-card-author">
+          @if (getAuthor(pub)?.image) {
+          <img [src]="getAuthor(pub).image" class="explore-card-avatar" alt="avatar"/>
+          } @else {
+          <div class="explore-card-avatar explore-card-avatar-placeholder"></div>
+          }
+          <div class="nick-wrap">
+            <span>&#64;{{ getAuthor(pub)?.nick }}</span>
+            @if (getAuthor(pub)?.role === 'ROLE_VERIFIED' || getAuthor(pub)?.role === 'ROLE_ADMIN') {
+            <span class="verified-wrap">
+              <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+            </span>
+            }
+          </div>
+        </div>
+        <div class="explore-card-stats">
+          @if (isLoggedIn) {
+          <button class="explore-like-btn" [class.explore-like-btn--active]="isLiked(pub)"
+                  (click)="toggleLike(pub._id, $event)">
+            <img [src]="isLiked(pub) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                 class="recipe-stat-icon" alt="likes"/>
+            {{ pub.likes.length }}
+          </button>
+          } @else {
+          <span class="recipe-stat">
+                <img src="icons/corazon.svg" class="recipe-stat-icon" alt="likes"/>
+                {{ pub.likes.length }}
+              </span>
+          }
+          <a class="recipe-stat feed-comment-link"
+             [routerLink]="['/publication', pub._id]"
+             fragment="comentarios"
+             (click)="$event.stopPropagation()">
+            <img src="icons/chat-de-burbujas.svg" class="recipe-stat-icon" alt="comentarios"/>
+            {{ (pub | asAny).commentsCount ?? 0 }}
+          </a>
+
+          <!--@if (pub.raciones) {
+            <span class="recipe-stat">
+              <img src="icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
+              {{ pub.raciones }}
+            </span>
+          } -->
+          @if (pub.tiempoHorno) {
+          <span class="recipe-stat">
+                <img src="icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
+                {{ pub.tiempoHorno }} min
+              </span>
+          }
+        </div>
+      </div>
+    </article>
+    }
+  </div>
+
+  @if (loading()) {
+  <app-loading-spinner/>
+  }
+</div>

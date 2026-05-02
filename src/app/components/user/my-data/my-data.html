@@ -1,0 +1,156 @@
+<section class="auth-page">
+  <div class="page-container">
+    <div class="auth-wrapper">
+      <div class="card-base auth-card">
+
+        <div class="mydata-avatar-wrap">
+          <div class="mydata-avatar-preview-wrap">
+            @if (previewUrl) {
+            <img [src]="previewUrl" class="mydata-avatar" alt="preview"/>
+            } @else if (identity?.image) {
+            <img
+              [src]="identity.image"
+              class="mydata-avatar"
+              alt="avatar"/>
+            } @else {
+            <div class="mydata-avatar mydata-avatar-placeholder"></div>
+            }
+
+            <label class="mydata-avatar-edit-btn" title="Cambiar foto">
+              <img src="icons/lapiz.svg" class="mydata-edit-icon" alt="editar foto"/>
+              <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden/>
+            </label>
+          </div>
+
+          <div class="mydata-avatar-info">
+            <p class="mydata-name">{{ identity?.name }} {{ identity?.surname }}</p>
+            <div class="mydata-nick-wrap">
+              <p class="mydata-nick">&#64;{{ identity?.nick }}</p>
+              @if (identity?.role === 'ROLE_VERIFIED' || identity?.role === 'ROLE_ADMIN') {
+              <span class="verified-wrap">
+                  <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                </span>
+              }
+            </div>
+            @if (previewUrl) {
+            <button type="button" class="btn btn-outline mydata-cancel-btn" (click)="cancelAvatarChange()">
+              Cancelar cambio de foto
+            </button>
+            }
+          </div>
+        </div>
+
+        <h1 class="title-section auth-title">
+          Mis <span class="title-highlight">datos</span>
+        </h1>
+
+        <p class="auth-subtitle">
+          Aquí puedes actualizar la información de tu perfil.
+        </p>
+
+        <form class="auth-form" [formGroup]="myDataForm" (ngSubmit)="onSubmit()">
+
+          <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <label>
+              <input
+                class="input-base"
+                formControlName="name"
+                placeholder="Escribe tu nombre"/>
+            </label>
+
+            @if (myDataForm.get('name')?.touched) {
+            <div class="form-error">
+              @if (myDataForm.get('name')?.errors?.['required']) {
+              <span>El nombre es obligatorio</span>
+              }
+              @if (myDataForm.get('name')?.errors?.['notOnlyWhiteSpace']) {
+              <span>No puede contener solo espacios</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Apellidos</label>
+            <label>
+              <input
+                class="input-base"
+                formControlName="surname"
+                placeholder="Escribe tus apellidos"/>
+            </label>
+
+            @if (myDataForm.get('surname')?.touched) {
+            <div class="form-error">
+              @if (myDataForm.get('surname')?.errors?.['required']) {
+              <span>Los apellidos son obligatorios</span>
+              }
+              @if (myDataForm.get('surname')?.errors?.['notOnlyWhiteSpace']) {
+              <span>No puede contener solo espacios</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nick</label>
+            <div class="nick-input-wrap">
+              <span class="nick-prefix">&#64;</span>
+              <input class="input-base nick-input" formControlName="nick" placeholder="nick"/>
+            </div>
+
+            @if (myDataForm.get('nick')?.touched) {
+            <div class="form-error">
+              @if (myDataForm.get('nick')?.errors?.['required']) {
+              <span>El nick es obligatorio</span>
+              }
+              @if (myDataForm.get('nick')?.errors?.['minlength']) {
+              <span>Debe tener al menos 3 caracteres</span>
+              }
+              @if (myDataForm.get('nick')?.errors?.['notOnlyWhiteSpace']) {
+              <span>No puede contener solo espacios</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <label>
+              <input
+                type="email"
+                class="input-base"
+                formControlName="email"
+                placeholder="Escribe tu correo"/>
+            </label>
+
+            @if (myDataForm.get('email')?.touched) {
+            <div class="form-error">
+              @if (myDataForm.get('email')?.errors?.['required']) {
+              <span>El correo es obligatorio</span>
+              }
+              @if (myDataForm.get('email')?.errors?.['email']) {
+              <span>El formato del correo no es válido</span>
+              }
+            </div>
+            }
+          </div>
+
+          @if (status === 'success') {
+          <div class="mydata-success">
+            ✓ Datos actualizados correctamente
+          </div>
+          }
+
+          <button type="submit" class="btn btn-primary auth-submit">
+            Guardar cambios
+          </button>
+
+          @if (status === 'duplicate' || status === 'unauthorized' || status === 'error') {
+          <p class="form-error">{{ errorMessage }}</p>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

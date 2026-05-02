@@ -1,0 +1,53 @@
+@if (user) {
+<div class="card-base user-card">
+
+  <div class="user-card-clickable" (click)="onProfileClick()">
+    <div class="user-card-avatar-wrap">
+      @if (user.image) {
+      <img [src]="user.image" class="user-avatar" alt="avatar"/>
+      } @else {
+      <div class="user-avatar-placeholder"></div>
+      }
+    </div>
+
+    <div class="user-card-body">
+      <h3 class="user-name">{{ user.name }} {{ user.surname }}</h3>
+      <div class="people-nick-wrap">
+        <p class="user-nick">&#64;{{ user.nick }}</p>
+        @if (user.role === 'ROLE_VERIFIED' || user.role === 'ROLE_ADMIN') {
+        <span class="verified-wrap">
+              <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+            </span>
+        }
+      </div>
+
+      @if (showEmail) {
+      <p class="user-email">{{ user.email }}</p>
+      }
+
+      @if (showStats && stats) {
+      <div class="user-stats">
+        <div class="user-stat-item" [routerLink]="profileId ? ['/follows/following', profileId] : null"
+             [style.cursor]="profileId ? 'pointer' : 'default'">
+          <strong>{{ stats.following ?? 0 }}</strong>
+          <span>Siguiendo</span>
+        </div>
+        <div class="user-stat-divider"></div>
+        <div class="user-stat-item" [routerLink]="profileId ? ['/follows/followers', profileId] : null"
+             [style.cursor]="profileId ? 'pointer' : 'default'">
+          <strong>{{ stats.followed ?? 0 }}</strong>
+          <span>Seguidores</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  @if (buttonText && buttonLink) {
+  <button class="btn btn-outline user-button" [routerLink]="buttonLink">
+    {{ buttonText }}
+  </button>
+  }
+
+</div>
+}

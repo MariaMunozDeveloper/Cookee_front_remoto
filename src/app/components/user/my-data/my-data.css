@@ -1,0 +1,157 @@
+.auth-page {
+  padding: 48px 0;
+}
+
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 520px;
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.auth-subtitle {
+  margin-bottom: 24px;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-error {
+  font-size: 13px;
+  color: #e74c3c;
+}
+
+.auth-submit {
+  width: auto;
+  align-self: flex-end;
+  margin-top: 8px;
+}
+
+.form-success {
+  font-size: 13px;
+  color: green;
+}
+
+.profile-card {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.mydata-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.mydata-avatar-preview-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.mydata-avatar,
+.mydata-avatar-placeholder {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-border);
+  display: block;
+}
+
+.mydata-avatar-placeholder {
+  background-color: var(--color-primary-light);
+}
+
+.mydata-avatar-edit-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s ease;
+}
+
+.mydata-avatar-edit-btn:hover {
+  background-color: var(--color-primary-light);
+}
+
+.mydata-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mydata-nick {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-primary);
+}
+
+.mydata-cancel-btn {
+  margin-top: var(--space-sm);
+  font-size: 13px;
+  min-height: 34px;
+  padding: 0 14px;
+}
+
+.mydata-edit-icon {
+  width: 13px;
+  height: 13px;
+  object-fit: contain;
+  opacity: 0.7;
+}
+
+.mydata-success {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2e7d32;
+  background-color: #f1f8f1;
+  border: 1px solid #c8e6c9;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  text-align: center;
+}
+
+.mydata-nick-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}

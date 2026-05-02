@@ -1,0 +1,80 @@
+.notfound-page {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xxl) var(--space-md);
+}
+
+.notfound-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  max-width: 480px;
+}
+
+.notfound-number {
+  margin-bottom: var(--space-md);
+}
+
+.notfound-404 {
+  font-family: var(--font-heading);
+  font-size: 120px;
+  font-weight: 700;
+  color: var(--color-primary);
+  opacity: 0.2;
+  line-height: 1;
+  letter-spacing: -4px;
+}
+
+.notfound-logo {
+  width: 70px;
+  height: auto;
+}
+
+.notfound-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.notfound-text {
+  font-size: 16px;
+  color: var(--color-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.notfound-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.notfound-plate-text {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-primary);
+  font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .notfound-4 {
+    font-size: 80px;
+  }
+
+  .notfound-plate {
+    width: 80px;
+    height: 80px;
+  }
+
+  .notfound-logo {
+    width: 55px;
+  }
+}

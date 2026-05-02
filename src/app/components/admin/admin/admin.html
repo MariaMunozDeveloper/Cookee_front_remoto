@@ -1,0 +1,271 @@
+<div class="page-container admin-page">
+
+  <div class="admin-header">
+    <h1 class="title-section">Panel de <span class="title-highlight">administración</span></h1>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab" [class.admin-tab--active]="activeTab === 'dashboard'" (click)="setTab('dashboard')">
+      Dashboard
+    </button>
+    <button class="admin-tab" [class.admin-tab--active]="activeTab === 'users'" (click)="setTab('users')">
+      Usuarios
+    </button>
+  </div>
+
+  @if (activeTab === 'dashboard') {
+
+  @if (loadingStats()) {
+  <app-loading-spinner/>
+  }
+
+  @if (!loadingStats() && stats) {
+  <div class="admin-stats-grid">
+    <div class="admin-stat-card">
+      <span class="admin-stat-number">{{ formatNumber(stats.totalUsers) }}</span>
+      <span class="admin-stat-label">Usuarios</span>
+    </div>
+    <div class="admin-stat-card">
+      <span class="admin-stat-number">{{ formatNumber(stats.totalPublications) }}</span>
+      <span class="admin-stat-label">Recetas</span>
+    </div>
+    <div class="admin-stat-card">
+      <span class="admin-stat-number">{{ formatNumber(stats.totalComments) }}</span>
+      <span class="admin-stat-label">Comentarios</span>
+    </div>
+    <div class="admin-stat-card">
+      <span class="admin-stat-number">{{ formatNumber(stats.totalLikes) }}</span>
+      <span class="admin-stat-label">Likes</span>
+    </div>
+  </div>
+
+  <div class="admin-charts-header">
+    <h2 class="admin-charts-title">Actividad de la comunidad</h2>
+    <div class="admin-period-selector">
+      @for (p of periods; track p.value) {
+      <button class="admin-period-btn" [class.admin-period-btn--active]="chartPeriod === p.value"
+              (click)="setPeriod(p.value)">
+        {{ p.label }}
+      </button>
+      }
+    </div>
+  </div>
+
+  @if (loadingCharts()) {
+  <app-loading-spinner/>
+  }
+
+  @if (!loadingCharts()) {
+  <div class="admin-charts-grid">
+
+    <div class="admin-chart-card">
+      <h3 class="admin-chart-title">Nuevos usuarios</h3>
+      <div class="admin-chart-wrap">
+        <canvas id="usersChart"></canvas>
+      </div>
+    </div>
+
+    <div class="admin-chart-card">
+      <h3 class="admin-chart-title">Recetas publicadas</h3>
+      <div class="admin-chart-wrap">
+        <canvas id="publicationsChart"></canvas>
+      </div>
+    </div>
+
+    <div class="admin-chart-card">
+      <h3 class="admin-chart-title">Días de más actividad</h3>
+      <div class="admin-chart-wrap">
+        <canvas id="activityChart"></canvas>
+      </div>
+    </div>
+
+    <div class="admin-chart-card">
+      <h3 class="admin-chart-title">Hashtags más usados</h3>
+      <div class="admin-chart-wrap">
+        <canvas id="hashtagsChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+  }
+  }
+  }
+
+  @if (activeTab === 'users') {
+
+  <div class="admin-search">
+    <label>
+      <input class="input-base admin-search-input" [(ngModel)]="searchInput"
+             placeholder="Buscar por nombre, nick o email..." (keyup.enter)="onSearch()"/>
+    </label>
+    <button class="btn btn-primary btn-sm" (click)="onSearch()">Buscar</button>
+    @if (search) {
+    <button class="btn btn-ghost btn-sm" (click)="clearSearch()">✕ Limpiar</button>
+    }
+  </div>
+
+  @if (loadingUsers()) {
+  <app-loading-spinner/>
+  }
+
+  @if (!loadingUsers() && users().length === 0) {
+  <div class="card-base admin-empty">
+    <p>No se encontraron usuarios.</p>
+  </div>
+  }
+
+  @if (!loadingUsers() && users().length > 0) {
+  <div class="admin-users-list">
+    @for (user of users(); track user._id) {
+    <div class="card-base admin-user-row" (click)="openUserPanel(user)">
+
+      <div class="admin-user-info">
+        <div class="admin-avatar-wrap">
+          @if (user.image) {
+          <img [src]="user.image" class="admin-avatar" alt="avatar"/>
+          } @else {
+          <div class="admin-avatar admin-avatar--placeholder"></div>
+          }
+        </div>
+        <div class="admin-user-text">
+          <span class="admin-user-name">
+            {{ user.name }} {{ user.surname }}
+            @if (user.role === 'ROLE_VERIFIED' || user.role === 'ROLE_ADMIN') {
+              <span class="verified-wrap">
+              <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+            </span>
+            }
+            @if (user.role === 'ROLE_ADMIN') {
+              <span class="admin-role-badge admin-role-badge--admin">Admin</span>
+            }
+          </span>
+          <span class="admin-user-nick">&#64;{{ user.nick }}</span>
+          <span class="admin-user-email">{{ user.email }}</span>
+        </div>
+      </div>
+
+      <div class="admin-user-actions" (click)="$event.stopPropagation()">
+        <select class="input-base admin-role-select" [value]="user.role"
+                (change)="updateRole(user._id, $any($event.target).value)">
+          @for (role of roles; track role.value) {
+          <option [value]="role.value">{{ role.label }}</option>
+          } @empty {
+          }
+        </select>
+        <button class="admin-delete-btn" (click)="confirmDelete(user._id)" title="Eliminar usuario">
+          <img src="icons/letra-x.svg" class="admin-delete-icon" alt="eliminar"/>
+        </button>
+      </div>
+
+    </div>
+    } @empty {
+    }
+  </div>
+
+  <div class="admin-pagination">
+    <button class="btn btn-outline btn-sm" (click)="prevPage()" [disabled]="page === 1">← Anterior</button>
+    <span class="admin-page-indicator">{{ page }} / {{ totalPages }}</span>
+    <button class="btn btn-outline btn-sm" (click)="nextPage()" [disabled]="page === totalPages">Siguiente →
+    </button>
+  </div>
+  }
+  }
+
+  @if (showUserPanel()) {
+  <div class="admin-panel-backdrop" (click)="closeUserPanel()">
+    <div class="admin-panel" (click)="$event.stopPropagation()">
+
+      <div class="admin-panel-header">
+        <div class="admin-panel-user">
+          @if (selectedUser?.image) {
+          <img [src]="selectedUser.image" class="admin-panel-avatar" alt="avatar"/>
+          } @else {
+          <div class="admin-panel-avatar admin-panel-avatar--placeholder"></div>
+          }
+          <div>
+            <h2 class="admin-panel-name">
+              {{ selectedUser?.name }} {{ selectedUser?.surname }}
+              @if (selectedUser?.role === 'ROLE_VERIFIED' || selectedUser?.role === 'ROLE_ADMIN') {
+              <span class="verified-wrap">
+                <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+              </span>
+              }
+            </h2>
+            <p class="admin-panel-nick">&#64;{{ selectedUser?.nick }}</p>
+          </div>
+        </div>
+        <button class="admin-panel-close" (click)="closeUserPanel()">✕</button>
+      </div>
+
+      @if (loadingUserStats()) {
+      <app-loading-spinner/>
+      }
+
+      @if (!loadingUserStats() && selectedUserStats) {
+      <div class="admin-panel-stats">
+        <div class="admin-panel-stat">
+          <strong>{{ formatNumber(selectedUserStats.totalPublications) }}</strong>
+          <span>Recetas</span>
+        </div>
+        <div class="admin-panel-stat">
+          <strong>{{ formatNumber(selectedUserStats.totalLikes) }}</strong>
+          <span>Likes recibidos</span>
+        </div>
+        <div class="admin-panel-stat">
+          <strong>{{ formatNumber(selectedUserStats.totalComments) }}</strong>
+          <span>Comentarios</span>
+        </div>
+        <div class="admin-panel-stat">
+          <strong>{{ formatNumber(selectedUserStats.totalFollowers) }}</strong>
+          <span>Seguidores</span>
+        </div>
+        <div class="admin-panel-stat">
+          <strong>{{ formatNumber(selectedUserStats.totalFollowing) }}</strong>
+          <span>Siguiendo</span>
+        </div>
+      </div>
+
+      <div class="admin-panel-role">
+        <p class="admin-panel-role-label">Rol actual: <strong>{{ getRoleLabel(selectedUser?.role) }}</strong></p>
+        <div class="admin-panel-role-btns">
+          @for (role of roles; track role.value) {
+          <button class="admin-panel-role-btn"
+                  [class.admin-panel-role-btn--active]="selectedUser?.role === role.value"
+                  (click)="updateRole(selectedUser._id, role.value)">
+            @if (role.value === 'ROLE_VERIFIED') {
+            <img src="icons/verificar.svg" class="admin-role-btn-icon" alt="verificado"/>
+            }
+            {{ role.label }}
+          </button>
+          } @empty {
+          }
+        </div>
+      </div>
+
+      <div class="admin-panel-footer">
+        <a class="btn btn-outline btn-sm" [routerLink]="['/profile', selectedUser?._id]" (click)="closeUserPanel()">
+          Ver perfil
+        </a>
+        <button class="btn btn-sm admin-panel-delete-btn"
+                (click)="confirmDelete(selectedUser._id); closeUserPanel()">
+          Eliminar usuario
+        </button>
+      </div>
+      }
+
+    </div>
+  </div>
+  }
+
+  @if (showDeleteModal()) {
+  <app-confirm-modal
+    title="¿Eliminar usuario?"
+    message="Se eliminarán el usuario y todas sus recetas y comentarios. Esta acción no tiene vuelta atrás."
+    confirmText="Sí, eliminar"
+    cancelText="Cancelar"
+    (confirmed)="deleteUser()"
+    (cancelled)="showDeleteModal.set(false)">
+  </app-confirm-modal>
+  }
+
+</div>

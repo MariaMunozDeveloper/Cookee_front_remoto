@@ -1,0 +1,124 @@
+<section class="auth-page">
+  <div class="page-container">
+    <div class="auth-wrapper">
+      <div class="card-base auth-card">
+
+        <h1 class="title-section auth-title">
+          Únete a <span class="title-highlight">Cookee</span>
+        </h1>
+
+        <p class="auth-subtitle">
+          Crea tu cuenta y empieza a compartir recetas, ideas y momentos.
+        </p>
+
+        <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+          <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <input class="input-base" formControlName="name" placeholder="Escribe tu nombre"/>
+
+            @if (registerForm.get('name')?.touched) {
+            <div class="form-error">
+              @if (registerForm.get('name')?.errors?.['required']) {
+              <span>El nombre es obligatorio</span>
+              }
+              @if (registerForm.get('name')?.errors?.['notOnlyWhiteSpace']) {
+              <span>No puede contener solo espacios</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Apellidos</label>
+            <label>
+              <input class="input-base" formControlName="surname" placeholder="Escribe tus apellidos"/>
+            </label>
+
+            @if (registerForm.get('surname')?.touched) {
+            <div class="form-error">
+              @if (registerForm.get('surname')?.errors?.['required']) {
+              <span>Los apellidos son obligatorios</span>
+              }
+              @if (registerForm.get('surname')?.errors?.['notOnlyWhiteSpace']) {
+              <span>No puede contener solo espacios</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nick</label>
+            <div class="nick-input-wrap">
+              <span class="nick-prefix">&#64;</span>
+              <input class="input-base nick-input" formControlName="nick" placeholder="nick"/>
+            </div>
+
+            @if (registerForm.get('nick')?.touched) {
+            <div class="form-error">
+              @if (registerForm.get('nick')?.errors?.['required']) {
+              <span>El nick es obligatorio</span>
+              }
+              @if (registerForm.get('nick')?.errors?.['minlength']) {
+              <span>Debe tener al menos 3 caracteres</span>
+              }
+              @if (registerForm.get('nick')?.errors?.['notOnlyWhiteSpace']) {
+              <span>No puede contener solo espacios</span>
+              }
+              @if (registerForm.get('nick')?.errors?.['forbiddenWord']) {
+              <span>Ese nick no está permitido</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <label>
+              <input type="email" class="input-base" formControlName="email" placeholder="Escribe tu correo"/>
+            </label>
+
+            @if (registerForm.get('email')?.touched) {
+            <div class="form-error">
+              @if (registerForm.get('email')?.errors?.['required']) {
+              <span>El correo es obligatorio</span>
+              }
+              @if (registerForm.get('email')?.errors?.['email']) {
+              <span>Formato de correo no válido</span>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="input-base" formControlName="password" placeholder="Crea una contraseña"/>
+
+            @if (registerForm.get('password')?.touched) {
+            <div class="form-error">
+              @if (registerForm.get('password')?.errors?.['required']) {
+              <span>La contraseña es obligatoria</span>
+              }
+              @if (registerForm.get('password')?.errors?.['minlength']) {
+              <span>Debe tener al menos 6 caracteres</span>
+              }
+              @if (registerForm.get('password')?.errors?.['notOnlyWhiteSpace']) {
+              <span>No puede contener solo espacios</span>
+              }
+            </div>
+            }
+          </div>
+
+          <button type="submit" class="btn btn-primary auth-submit">
+            Crear cuenta
+          </button>
+        </form>
+
+        <p class="auth-footer-text">
+          ¿Ya tienes cuenta?
+          <a class="auth-link" routerLink="/login">Inicia sesión</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
