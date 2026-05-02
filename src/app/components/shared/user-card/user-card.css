@@ -1,0 +1,118 @@
+.user-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-lg);
+  gap: 0;
+}
+
+.user-card-avatar-wrap {
+  position: relative;
+  margin-bottom: var(--space-md);
+}
+
+.user-avatar,
+.user-avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+}
+
+.user-avatar {
+  object-fit: cover;
+  border: 3px solid var(--color-primary-light);
+}
+
+.user-avatar-placeholder {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-surface-soft));
+  border: 3px solid var(--color-primary-light);
+}
+
+.user-card-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.user-name {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.user-nick {
+  font-size: 13px;
+  color: var(--color-primary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.user-email {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: var(--space-xs) 0 0;
+}
+
+.user-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border-soft);
+  width: 100%;
+}
+
+.user-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.user-stat-item strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+}
+
+.user-stat-item span {
+  font-size: 11px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-stat-divider {
+  width: 1px;
+  height: 28px;
+  background-color: var(--color-border);
+}
+
+.user-button {
+  width: 100%;
+  margin-top: var(--space-md);
+}
+
+.user-card-clickable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.people-nick-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

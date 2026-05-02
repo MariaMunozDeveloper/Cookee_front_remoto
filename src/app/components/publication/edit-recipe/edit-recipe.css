@@ -1,0 +1,350 @@
+.edit-page {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xxl);
+}
+
+.edit-layout {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.edit-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.edit-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.edit-header-text .title-section {
+  margin-bottom: 0;
+}
+
+.edit-cancel-link {
+  font-size: 13px;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.edit-cancel-link:hover {
+  color: var(--color-primary);
+}
+
+.edit-save-btn {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.edit-alert {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.edit-alert--error {
+  background-color: #fdf2f2;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+}
+
+.edit-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--color-border);
+  gap: 0;
+}
+
+.edit-tab {
+  position: relative;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.edit-tab:hover {
+  color: var(--color-text);
+}
+
+.edit-tab--active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.edit-tab-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #e74c3c;
+}
+
+.edit-form {
+  min-height: 300px;
+}
+
+.edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg) 0;
+}
+
+.edit-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.edit-section-hint {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.edit-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.edit-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.ingredient-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.ingredient-name {
+  flex: 2;
+}
+
+.ingredient-qty {
+  flex: 1;
+}
+
+.ingredient-unit {
+  flex: 1;
+}
+
+.ingredient-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  font-size: 14px;
+  padding: 10px 6px;
+  margin-top: 2px;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s;
+}
+
+.ingredient-remove:hover {
+  color: #e74c3c;
+}
+
+.step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-image-wrap {
+  margin-top: var(--space-sm);
+}
+
+.step-img-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.step-img-upload-btn:hover {
+  background-color: var(--color-surface-soft);
+}
+
+.step-img-upload-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.6;
+}
+
+.step-img-preview-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.step-img-preview {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.recipe-upload-btn {
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.recipe-images-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-sm);
+}
+
+.recipe-image-wrap {
+  position: relative;
+}
+
+.recipe-preview-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.recipe-remove-img {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-preview-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  align-items: flex-start;
+}
+
+.cover-preview-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.recipe-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.recipe-add-btn {
+  align-self: flex-start;
+}
+
+.recipe-empty-hint {
+  text-align: center;
+  color: var(--color-muted);
+  padding: var(--space-lg);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.hashtag-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.hashtag-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--color-primary);
+  padding: 0 0 0 4px;
+}
+
+.form-error span {
+  color: #e74c3c;
+  font-size: 13px;
+}
+
+.btn-ghost {
+  background-color: transparent;
+}
+
+@media (max-width: 600px) {
+  .edit-info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .edit-tab {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 13px;
+  }
+}

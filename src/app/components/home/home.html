@@ -1,0 +1,240 @@
+<section class="home-hero">
+  <div class="page-container home-hero-inner">
+
+    <div class="home-hero-text">
+      <p class="home-hero-eyebrow">La red social de los cocinillas</p>
+      <h1 class="home-hero-title">
+        Tu cocina,<br>
+        tu <em>historia</em>
+      </h1>
+      <p class="home-hero-subtitle">
+        Comparte tus recetas, sigue a otros cocinillas y descubre
+        platos increíbles cada día.
+      </p>
+      <div class="home-hero-actions">
+        @if (!isLoggedIn) {
+        <a class="btn btn-primary btn-lg" routerLink="/register">Empezar gratis</a>
+        }
+        <a class="btn btn-hero-outline btn-lg" routerLink="/explore">Explorar recetas</a>
+      </div>
+    </div>
+
+    <div class="home-hero-circles">
+      @for (circle of heroCircles; track $index) {
+      <div class="home-hero-circle-wrap home-hero-circle-wrap--{{ $index + 1 }}">
+        <img [src]="circle.src" class="home-hero-circle-img" [alt]="circle.type"/>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+@if (loaded() && trendingRecipes().length > 0) {
+<section class="home-trending">
+  <div class="page-container">
+
+    <div class="home-section-header">
+      <div class="home-section-title-wrap">
+        <img src="icons/fuego.svg" class="home-section-icon" alt="trending"/>
+        <h2 class="home-section-title">En <em>tendencia</em></h2>
+      </div>
+      <a class="btn btn-ghost btn-sm" routerLink="/explore">Ver más →</a>
+    </div>
+
+    <div class="home-trending-grid">
+
+      <div class="home-trending-featured" [routerLink]="['/publication', trendingRecipes()[0]._id]">
+        <div class="home-trending-featured-img-wrap">
+          @if (getCover(trendingRecipes()[0])) {
+          <img [src]="getCover(trendingRecipes()[0])" [alt]="trendingRecipes()[0].title" class="home-trending-img"/>
+          } @else {
+          <div class="home-trending-img home-trending-img--placeholder"></div>
+          }
+        </div>
+        <div class="home-trending-featured-body">
+          <h3 class="home-trending-featured-title">{{ trendingRecipes()[0].title }}</h3>
+
+          @if ((trendingRecipes()[0].user | asAny)?.nick) {
+          <span class="home-trending-author">
+            @if ((trendingRecipes()[0].user | asAny)?.image) {
+              <img [src]="(trendingRecipes()[0].user | asAny).image" class="home-trending-avatar" alt="avatar"/>
+            } @else {
+              <div class="home-trending-avatar home-trending-avatar--placeholder"></div>
+            }
+                <div class="nick-wrap">
+                  <span>&#64;{{ (trendingRecipes()[0].user | asAny)?.nick }}</span>
+                  @if ((trendingRecipes()[0].user | asAny)?.role === 'ROLE_VERIFIED' || (trendingRecipes()[0].user | asAny)?.role === 'ROLE_ADMIN') {
+                    <span class="verified-wrap">
+                      <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                    </span>
+                  }
+                </div>
+              </span>
+          }
+
+          <div class="home-trending-featured-stats">
+            <button
+              class="home-trending-stat home-trending-like-btn"
+              [class.home-trending-like-btn--active]="isLiked(trendingRecipes()[0])"
+              (click)="toggleLike(trendingRecipes()[0]._id, $event)">
+              <img
+                [src]="isLiked(trendingRecipes()[0]) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                class="home-trending-stat-icon" alt="likes"/>
+              <span>{{ trendingRecipes()[0].likes.length }}</span>
+            </button>
+            <a class="home-trending-stat"
+               [routerLink]="['/publication', trendingRecipes()[0]._id]"
+               fragment="comentarios"
+               (click)="$event.stopPropagation()">
+              <img src="icons/chat-de-burbujas.svg" class="home-trending-stat-icon" alt="comentarios"/>
+              <span>{{ getCommentsCount(trendingRecipes()[0]) }}</span>
+            </a>
+            @if (trendingRecipes()[0].raciones) {
+            <span class="home-trending-stat">
+              <img src="icons/usuarios.svg" class="home-trending-stat-icon" alt="raciones"/>
+              <span>{{ trendingRecipes()[0].raciones }}</span>
+            </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="home-trending-list">
+        @for (recipe of trendingRecipes().slice(1); track recipe._id) {
+        <div class="home-trending-item" [routerLink]="['/publication', recipe._id]">
+          <div class="home-trending-item-img-wrap">
+            @if (getCover(recipe)) {
+            <img [src]="getCover(recipe)" [alt]="recipe.title" class="home-trending-img"/>
+            } @else {
+            <div class="home-trending-img home-trending-img--placeholder"></div>
+            }
+          </div>
+          <div class="home-trending-item-body">
+            <h3 class="home-trending-item-title">{{ recipe.title }}</h3>
+            <div class="home-trending-item-stats">
+              <button
+                class="home-trending-stat home-trending-like-btn home-trending-like-btn--sm"
+                [class.home-trending-like-btn--active]="isLiked(recipe)"
+                (click)="toggleLike(recipe._id, $event)">
+                <img
+                  [src]="isLiked(recipe) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                  class="home-trending-stat-icon" alt="likes"/>
+                <span>{{ recipe.likes.length }}</span>
+              </button>
+              <a class="home-trending-stat"
+                 [routerLink]="['/publication', recipe._id]"
+                 fragment="comentarios"
+                 (click)="$event.stopPropagation()">
+                <img src="icons/chat-de-burbujas.svg" class="home-trending-stat-icon" alt="comentarios"/>
+                <span>{{ getCommentsCount(recipe) }}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        } @empty {
+        }
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+@if (loaded() && hashtagSections().length > 0) {
+<section class="home-hashtags-section">
+  <div class="page-container">
+
+    <div class="home-section-header">
+      <div class="home-section-title-wrap">
+        <h2 class="home-section-title">Explora por <em>tema</em></h2>
+      </div>
+    </div>
+
+    @for (section of hashtagSections(); track section.tag) {
+    <div class="home-hashtag-block">
+
+      <a class="home-hashtag-block-link" routerLink="/explore" [queryParams]="{ hashtag: section.tag }">
+        Ver más →
+      </a>
+
+      <div class="home-hashtag-block-header">
+        <img [src]="section.icon" class="home-hashtag-block-icon" alt="icono"/>
+        <div class="home-hashtag-block-title-wrap">
+          <h3 class="home-hashtag-block-title">
+            <span class="home-hashtag-symbol">#</span>{{ section.tag }}
+          </h3>
+        </div>
+      </div>
+
+      <div class="home-hashtag-recipes-grid">
+        @for (recipe of section.recipes; track recipe._id) {
+        <div class="home-hashtag-recipe-card" [routerLink]="['/publication', recipe._id]">
+          <div class="home-hashtag-recipe-img-wrap">
+            @if (getCover(recipe)) {
+            <img [src]="getCover(recipe)" [alt]="recipe.title" class="home-hashtag-recipe-img"/>
+            } @else {
+            <div class="home-hashtag-recipe-img home-hashtag-recipe-img--placeholder"></div>
+            }
+          </div>
+          <div class="home-hashtag-recipe-body">
+            <h4 class="home-hashtag-recipe-title">{{ recipe.title }}</h4>
+            <div class="home-hashtag-recipe-meta">
+              @if ((recipe.user | asAny)?.image) {
+              <img [src]="(recipe.user | asAny).image" class="home-hashtag-recipe-avatar" alt="avatar"/>
+              } @else {
+              <div class="home-hashtag-recipe-avatar home-hashtag-recipe-avatar--placeholder"></div>
+              }
+              <div class="nick-wrap">
+                <span class="home-hashtag-recipe-nick">&#64;{{ (recipe.user | asAny)?.nick }}</span>
+                @if ((recipe.user | asAny)?.role === 'ROLE_VERIFIED' || (recipe.user | asAny)?.role === 'ROLE_ADMIN') {
+                <span class="verified-wrap">
+                          <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                        </span>
+                }
+              </div>
+            </div>
+            <div class="home-hashtag-recipe-stats">
+              <button
+                class="home-hashtag-recipe-stat home-trending-like-btn home-trending-like-btn--sm"
+                [class.home-trending-like-btn--active]="isLiked(recipe)"
+                (click)="toggleLike(recipe._id, $event)">
+                <img
+                  [src]="isLiked(recipe) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                  class="home-hashtag-stat-icon" alt="likes"/>
+                <span>{{ recipe.likes.length }}</span>
+              </button>
+              <span class="home-hashtag-recipe-stat">
+                <img src="icons/chat-de-burbujas.svg" class="home-hashtag-stat-icon" alt="comentarios"/>
+                <span>{{ getCommentsCount(recipe) }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        } @empty {
+        }
+      </div>
+    </div>
+    } @empty {
+    }
+  </div>
+</section>
+}
+
+<section class="home-cta">
+  <div class="page-container">
+    <div class="home-cta-inner">
+      @if (!isLoggedIn) {
+      <h2 class="home-cta-title">
+        ¿Lista para compartir<br>tus <em>recetas</em>?
+      </h2>
+      <p class="home-cta-subtitle">Únete gratis y empieza a construir tu recetario hoy.</p>
+      <a class="btn btn-primary btn-lg" routerLink="/register">Crear mi cuenta</a>
+      } @else {
+      <h2 class="home-cta-title">
+        ¿Tienes una receta<br>para <em>compartir</em>?
+      </h2>
+      <p class="home-cta-subtitle">Publica tu receta y compártela con la comunidad Cookee.</p>
+      <a class="btn btn-primary btn-lg" routerLink="/create-recipe">+ Nueva receta</a>
+      }
+    </div>
+  </div>
+</section>

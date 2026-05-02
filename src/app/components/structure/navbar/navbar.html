@@ -1,0 +1,109 @@
+<nav class="navbar">
+  <div class="page-container navbar-content">
+
+    <a class="navbar-logo" routerLink="/">
+      <img src="Cookee_logo_crudo.svg" alt="Cookee" class="navbar-logo-img"/>
+    </a>
+
+    <div class="navbar-menu">
+      @if (identity) {
+      <a class="navbar-link" routerLink="/feed" routerLinkActive="navbar-link-active">Inicio</a>
+      }
+      <a class="navbar-link" routerLink="/explore" routerLinkActive="navbar-link-active">ParaTi</a>
+      <a class="navbar-link" routerLink="/people" routerLinkActive="navbar-link-active">Cocinillas</a>
+      @if (identity) {
+      <a class="navbar-link navbar-link-messages" routerLink="/messages" routerLinkActive="navbar-link-active">
+        Mensajes
+        @if (unreadMessages > 0) {
+        <span class="navbar-badge">{{ unreadMessages }}</span>
+        }
+      </a>
+      }
+      @if (identity?.role === 'ROLE_ADMIN') {
+      <a class="navbar-link" routerLink="/admin" routerLinkActive="navbar-link-active">
+        <img src="icons/ajustes.svg" class="navbar-link-icon" alt="admin"/> Admin
+      </a>
+      }
+    </div>
+
+    <div class="navbar-actions">
+      @if (!identity) {
+      <a class="btn btn-ghost btn-sm" routerLink="/login">Entrar</a>
+      <a class="btn btn-primary btn-sm" routerLink="/register">Registrarse</a>
+      }
+
+      @if (identity) {
+      <a class="btn btn-primary btn-sm navbar-create-btn" routerLink="/create-recipe">+ Receta</a>
+
+      <div class="navbar-user-menu">
+        <button class="navbar-user-btn" (click)="toggleUserMenu()">
+          @if (identity.image) {
+          <img [src]="identity.image" alt="avatar" class="navbar-avatar"/>
+          } @else {
+          <div class="navbar-avatar navbar-avatar-placeholder"></div>
+          }
+          <span class="navbar-user-nick">{{ identity.nick }}</span>
+          <span class="navbar-chevron">▾</span>
+        </button>
+
+        @if (showUserMenu) {
+        <div class="navbar-dropdown">
+          <a class="navbar-dropdown-link" [routerLink]="['/profile', identity._id]" (click)="closeUserMenu()">
+            Mi perfil
+          </a>
+          <a class="navbar-dropdown-link" routerLink="/my-data" (click)="closeUserMenu()">
+            Mis datos
+          </a>
+          <hr class="navbar-dropdown-divider"/>
+          <button class="navbar-dropdown-link navbar-dropdown-btn" (click)="logout()">
+            Cerrar sesión
+          </button>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <button class="navbar-hamburger" (click)="toggleMobileMenu()" [class.navbar-hamburger--open]="showMobileMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+  @if (showMobileMenu) {
+  <div class="navbar-mobile-menu">
+    <a class="navbar-mobile-link" routerLink="/explore" routerLinkActive="navbar-mobile-link--active"
+       (click)="closeMobileMenu()">Explorar</a>
+    <a class="navbar-mobile-link" routerLink="/people" routerLinkActive="navbar-mobile-link--active"
+       (click)="closeMobileMenu()">Cocinillas</a>
+    @if (identity) {
+    <a class="navbar-mobile-link" routerLink="/feed" routerLinkActive="navbar-mobile-link--active"
+       (click)="closeMobileMenu()">Feed</a>
+    <a class="navbar-mobile-link navbar-link-messages" routerLink="/messages"
+       routerLinkActive="navbar-mobile-link--active" (click)="closeMobileMenu()">
+      Mensajes
+      @if (unreadMessages > 0) {
+      <span class="navbar-badge">{{ unreadMessages }}</span>
+      }
+    </a>
+    <a class="navbar-mobile-link" routerLink="/create-recipe" routerLinkActive="navbar-mobile-link--active"
+       (click)="closeMobileMenu()">+ Nueva receta</a>
+    <a class="navbar-mobile-link" [routerLink]="['/profile', identity._id]" (click)="closeMobileMenu()">Mi
+      perfil</a>
+    <a class="navbar-mobile-link" routerLink="/my-data" (click)="closeMobileMenu()">Mis datos</a>
+    @if (identity?.role === 'ROLE_ADMIN') {
+    <a class="navbar-mobile-link" routerLink="/admin" (click)="closeMobileMenu()">Admin</a>
+    }
+    <hr class="navbar-mobile-divider"/>
+    <button class="navbar-mobile-link navbar-mobile-logout" (click)="logout()">Cerrar sesión</button>
+    } @else {
+    <hr class="navbar-mobile-divider"/>
+    <a class="navbar-mobile-link" routerLink="/login" (click)="closeMobileMenu()">Entrar</a>
+    <a class="navbar-mobile-link" routerLink="/register" (click)="closeMobileMenu()">Registrarse</a>
+    }
+  </div>
+  }
+
+</nav>

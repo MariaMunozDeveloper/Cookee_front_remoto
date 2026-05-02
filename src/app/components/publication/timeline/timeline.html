@@ -1,0 +1,189 @@
+<div class="page-container feed-page">
+  <aside class="feed-sidebar">
+    <app-user-card
+      [user]="identity"
+      [stats]="stats()"
+      [showStats]="true"
+      [buttonText]="'Mis datos'"
+      [buttonLink]="'/my-data'"
+      [profileId]="identity._id">
+    </app-user-card>
+
+    <div class="card-base feed-create-card">
+      <p class="feed-create-text">¿Tienes una receta nueva?</p>
+      <a class="btn btn-primary" routerLink="/create-recipe">+ Crear receta</a>
+    </div>
+  </aside>
+
+  <main class="feed-main">
+
+    <div class="feed-header">
+      <h1 class="feed-title">Ini<em>cio</em></h1>
+      <p class="feed-subtitle">Las últimas recetas de la gente que sigues</p>
+    </div>
+
+    <div class="feed-list">
+
+      @for (publication of publications(); track publication._id) {
+      <article class="feed-recipe-card card-hover" [routerLink]="['/publication', publication._id]">
+
+        <div class="feed-recipe-cover">
+          @if (getCover(publication)) {
+          <img
+            [src]="getCover(publication)"
+            [alt]="publication.title"
+            class="feed-recipe-img"/>
+
+          } @else {
+          <div class="feed-recipe-img-placeholder"></div>
+          }
+          @if (identity) {
+          <button class="favorite-btn"
+                  (click)="favoriteService.toggleFavorite(publication._id); $event.stopPropagation()">
+            <img
+              [src]="favoriteService.isFavorite(publication._id) ? 'icons/favorito (1).svg' : 'icons/favorito.svg'"
+              class="favorite-btn-icon"
+              alt="favorito"/>
+          </button>
+          }
+        </div>
+
+        <div class="feed-recipe-body">
+
+          <div class="feed-recipe-author">
+            <a [routerLink]="['/profile', getAuthor(publication)?._id]" class="feed-author-link"
+               (click)="$event.stopPropagation()">
+              @if (getAuthor(publication)?.image) {
+              <img
+                [src]="getAuthor(publication).image"
+                class="feed-author-avatar"
+                alt="avatar"/>
+              } @else {
+              <div class="feed-author-avatar feed-author-avatar-placeholder"></div>
+              }
+              <span class="feed-author-nick">&#64;{{ getAuthor(publication)?.nick }}</span>
+              <div class="people-nick-wrap">
+                @if (getAuthor(publication)?.role === 'ROLE_VERIFIED' || getAuthor(publication)?.role === 'ROLE_ADMIN')
+                {
+                <span class="verified-wrap">
+                      <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                    </span>
+                }
+              </div>
+            </a>
+            <span class="feed-recipe-date">{{ getTimeAgo(publication.createdAt) }}</span>
+          </div>
+
+          <h2 class="feed-recipe-title">{{ publication.title }}</h2>
+
+          @if (publication.description) {
+          <p class="feed-recipe-desc">{{ publication.description }}</p>
+          }
+
+          <div class="feed-recipe-stats">
+            @if (publication.raciones) {
+            <span class="recipe-stat">
+              <img src="icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
+                  {{ publication.raciones }} rac.
+            </span>
+            }
+            @if (publication.tiempoHorno) {
+            <span class="recipe-stat">
+              <img src="icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
+                  {{ publication.tiempoHorno }} min
+            </span>
+            }
+            @if (publication.temperaturaHorno) {
+            <span class="recipe-stat">
+              <img src="icons/termometro_1.svg" class="recipe-stat-icon" alt="temperatura"/>
+                  {{ publication.temperaturaHorno }}°C
+            </span>
+            }
+            @if (publication.ingredients.length) {
+            <span class="recipe-stat">
+              <img src="icons/ingredientes.svg" class="recipe-stat-icon" alt="ingredientes"/>
+                  {{ publication.ingredients.length }} ing.
+            </span>
+            }
+          </div>
+
+          @if (publication.hashtags && publication.hashtags.length > 0) {
+          <div class="feed-recipe-hashtags">
+            @for (tag of publication.hashtags; track tag) {
+            <span class="hashtag">#{{ tag }}</span>
+            }
+          </div>
+          }
+
+          <div class="feed-recipe-footer">
+            <div class="feed-recipe-footer-icons">
+              <button class="feed-like-btn" (click)="toggleLike(publication._id, $event)">
+                <img
+                  [src]="isLiked(publication) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                  class="recipe-stat-icon feed-like-icon"
+                  alt="like"
+                />
+                {{ publication.likes.length }}
+              </button>
+
+              <a class="feed-comment-link"
+                 [routerLink]="['/publication', publication._id]"
+                 fragment="comentarios"
+                 (click)="$event.stopPropagation()">
+                <img src="icons/chat-de-burbujas.svg" class="recipe-stat-icon" alt="comentarios"/>
+                {{ (publication | asAny).commentsCount ?? 0 }}
+              </a>
+            </div>
+
+            <div class="feed-recipe-actions">
+              @if (isMyPublication(publication)) {
+              <div class="feed-recipe-menu">
+                <button class="feed-menu-btn" (click)="toggleMenu(publication._id, $event)">···</button>
+                @if (activeMenu() === publication._id) {
+                <div class="feed-menu-dropdown">
+                  <a class="feed-menu-item" [routerLink]="['/edit-recipe', publication._id]"
+                     (click)="$event.stopPropagation()">️ Editar</a>
+                  <button class="feed-menu-item feed-menu-item-danger"
+                          (click)="confirmDelete(publication._id, $event)"> Eliminar
+                  </button>
+                </div>
+                }
+              </div>
+              }
+              <span class="feed-recipe-link">Ver receta →</span>
+            </div>
+          </div>
+        </div>
+      </article>
+      }
+
+      @if (loading()) {
+      <app-loading-spinner/>
+      }
+
+      @if (!hasMore && publications().length > 0 && !loading()) {
+      <p class="feed-end">Ya has visto todo por hoy </p>
+      }
+
+      @if (publications().length === 0 && !loading()) {
+      <div class="card-base feed-empty">
+        <p>Aún no hay recetas en tu feed.</p>
+        <p>Sigue a otros cocinillas para ver sus recetas aquí.</p>
+        <a class="btn btn-primary" routerLink="/people">Buscar cocinillas</a>
+      </div>
+      }
+    </div>
+  </main>
+
+  @if (showDeleteModal()) {
+  <app-confirm-modal
+    title="¿Eliminar receta?"
+    message="Se eliminará permanentemente. Esta acción no tiene vuelta atrás."
+    confirmText="Sí, eliminar"
+    cancelText="Cancelar"
+    (confirmed)="deletePublication()"
+    (cancelled)="showDeleteModal.set(false)">
+  </app-confirm-modal>
+  }
+
+</div>

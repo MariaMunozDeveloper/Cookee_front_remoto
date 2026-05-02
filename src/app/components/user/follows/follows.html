@@ -1,0 +1,71 @@
+<div class="page-container follows-page">
+
+  <div class="follows-header">
+    <h1 class="title-section">
+      <span class="title-highlight">{{ titulo }}</span>
+    </h1>
+  </div>
+
+  @if (loading()) {
+  <app-loading-spinner/>
+  }
+
+  @if (!loading() && users().length === 0) {
+  <div class="card-base follows-empty">
+    <p>{{ modo === 'following' ? 'No sigues a nadie todavía.' : 'Nadie te sigue todavía.' }}</p>
+  </div>
+  }
+
+  @if (!loading() && users().length > 0) {
+  <div class="follows-list">
+    @for (user of users(); track user._id) {
+    <div class="card-base follows-row">
+
+      <div class="follows-user-info" [routerLink]="['/profile', user._id]">
+        <div class="follows-avatar-wrap">
+          @if (user.image) {
+          <img [src]="user.image" class="follows-avatar" alt="avatar"/>
+          } @else {
+          <div class="follows-avatar follows-avatar--placeholder"></div>
+          }
+        </div>
+
+        <div class="follows-user-text">
+          <p class="follows-name">{{ user.name }} {{ user.surname }}</p>
+          <div class="people-nick-wrap">
+            <p class="follows-nick">&#64;{{ user.nick }}</p>
+            @if (user.role === 'ROLE_VERIFIED' || user.role === 'ROLE_ADMIN') {
+            <span class="verified-wrap">
+                    <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                  </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      @if (modo === 'following' && isOwnProfile) {
+      <div class="follows-action">
+        <button class="follows-btn" (click)="unfollow(user._id); $event.stopPropagation()">
+          <span class="follows-btn-label">Siguiendo</span>
+          <span class="follows-btn-hover">Dejar de seguir</span>
+        </button>
+      </div>
+      }
+
+    </div>
+    } @empty {
+    }
+  </div>
+
+  <div class="follows-pagination">
+    <button class="btn btn-outline btn-sm" (click)="prevPage()" [disabled]="page === 1">
+      ← Anterior
+    </button>
+    <span class="follows-page-indicator">{{ page }} / {{ totalPages }}</span>
+    <button class="btn btn-outline btn-sm" (click)="nextPage()" [disabled]="page === totalPages">
+      Siguiente →
+    </button>
+  </div>
+  }
+
+</div>

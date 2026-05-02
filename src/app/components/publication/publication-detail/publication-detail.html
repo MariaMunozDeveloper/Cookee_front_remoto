@@ -1,0 +1,480 @@
+<div class="detail-page">
+  @if (loading()) {
+  <div class="page-container">
+    <app-loading-spinner/>
+  </div>
+  }
+
+  @if (!loading() && publication()) {
+
+  <div class="detail-cover">
+    @if (publication()!.images.length > 0) {
+    <img [src]="publication()!.images[0]" [alt]="publication()!.title" class="detail-cover-img"/>
+    } @else {
+    <div class="detail-cover-placeholder">
+      <img src="icons/libro-de-cocina.svg" class="detail-placeholder-icon" alt="receta"/>
+    </div>
+    }
+    <div class="detail-cover-overlay"></div>
+  </div>
+
+  <div class="page-container-narrow">
+    <header class="detail-header">
+      <div class="detail-author">
+        <a [routerLink]="['/profile', (publication()!.user | asAny)?._id]" class="detail-author-link">
+          @if ((publication()!.user | asAny)?.image) {
+          <img [src]="(publication()!.user | asAny).image" class="detail-author-avatar" alt="avatar"/>
+          } @else {
+          <div class="detail-author-avatar detail-author-avatar-placeholder"></div>
+          }
+          <span class="detail-author-name">
+            {{ (publication()!.user | asAny)?.name }} {{ (publication()!.user | asAny)?.surname }}
+          </span>
+          <div class="nick-wrap">
+            <span class="detail-author-nick">&#64;{{ (publication()!.user | asAny)?.nick }}</span>
+            @if ((publication()!.user | asAny)?.role === 'ROLE_VERIFIED' || (publication()!.user | asAny)?.role ===
+            'ROLE_ADMIN') {
+            <span class="verified-wrap">
+              <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+            </span>
+            }
+          </div>
+        </a>
+        <span class="detail-date">{{ getTimeAgo(publication()!.createdAt) }}</span>
+      </div>
+
+      <h1 class="detail-title">{{ publication()!.title }}</h1>
+
+      <div class="detail-stats">
+        @if (publication()!.raciones) {
+        <span class="recipe-stat">
+          <img src="icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
+          <strong>{{ publication()!.raciones }}</strong> raciones
+        </span>
+        }
+        @if (publication()!.tiempoHorno) {
+        <span class="recipe-stat">
+          <img src="icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
+          <strong>{{ publication()!.tiempoHorno }}</strong> min
+        </span>
+        }
+        @if (publication()!.temperaturaHorno) {
+        <span class="recipe-stat">
+          <img src="icons/termometro_1.svg" class="recipe-stat-icon" alt="temperatura"/>
+          <strong>{{ publication()!.temperaturaHorno }}</strong>°C
+        </span>
+        }
+        @if (publication()!.ingredients.length) {
+        <span class="recipe-stat">
+          <img src="icons/ingredientes.svg" class="recipe-stat-icon" alt="ingredientes"/>
+          <strong>{{ publication()!.ingredients.length }}</strong> ingredientes
+        </span>
+        }
+        @if (publication()!.steps.length) {
+        <span class="recipe-stat">
+          <img src="icons/cadena-de-valor.svg" class="recipe-stat-icon" alt="pasos"/>
+          <strong>{{ publication()!.steps.length }}</strong> pasos
+        </span>
+        }
+      </div>
+
+      <div class="detail-actions">
+        @if (isLoggedIn) {
+        <button class="detail-like-btn" [class.detail-like-btn-active]="hasLike()" (click)="toggleLike()">
+          <img [src]="hasLike() ? 'icons/corazon.svg' : 'icons/corazon_line.svg'" class="detail-like-icon"
+               alt="like"/>
+          {{ likesCount() }} me gusta
+        </button>
+        <button class="detail-favorite-btn" (click)="favoriteService.toggleFavorite(publication()!._id)">
+          <img
+            [src]="favoriteService.isFavorite(publication()!._id) ? 'icons/favorito (1).svg' : 'icons/favorito.svg'"
+            class="detail-favorite-icon" alt="favorito"/>
+          {{ favoriteService.isFavorite(publication()!._id) ? 'Guardado' : 'Guardar' }}
+        </button>
+        }
+
+        @if (isMyPublication()) {
+        <div class="detail-owner-actions">
+          <a class="detail-edit-btn" [routerLink]="['/edit-recipe', publication()!._id]">
+            <img src="icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
+            Editar receta
+          </a>
+          <button class="detail-delete-btn" (click)="confirmDelete()">Eliminar</button>
+        </div>
+        }
+
+        @if (publication()!.hashtags && publication()!.hashtags.length > 0) {
+        <div class="detail-hashtags">
+          @for (tag of publication()!.hashtags; track tag) {
+          <span class="hashtag">#{{ tag }}</span>
+          }
+        </div>
+        }
+      </div>
+    </header>
+
+    @if (introText() || isMyPublication()) {
+    <section class="detail-section detail-intro-section">
+      @if (!editingIntro()) {
+      <div class="detail-intro-view">
+        @if (introText()) {
+        <p class="detail-intro">{{ introText() }}</p>
+        } @else {
+        <p class="detail-intro-empty">Cuenta qué te llevó a crear esta receta...</p>
+        }
+        @if (isMyPublication()) {
+        <button class="detail-rec-edit-trigger" (click)="startEditingIntro()">
+          <img src="icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
+          Editar introducción
+        </button>
+        }
+      </div>
+      } @else {
+      <div class="detail-intro-editor">
+        <label>
+          <textarea class="input-base detail-intro-textarea" [(ngModel)]="introInput"
+                    placeholder="Cuenta qué te llevó a crear esta receta..." rows="3"></textarea>
+        </label>
+        @if (introError) {
+        <p class="comment-error">{{ introError }}</p>
+        }
+        <div class="detail-rec-actions">
+          <button class="btn btn-outline btn-sm" (click)="cancelEditingIntro()">Cancelar</button>
+          <button class="btn btn-primary btn-sm" (click)="saveIntro()" [disabled]="savingIntro">
+            {{ savingIntro ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+      }
+    </section>
+    }
+
+    @if (publication()!.description) {
+    <section class="detail-section">
+      <p class="detail-description">{{ publication()!.description }}</p>
+    </section>
+    }
+
+    @if (publication()!.images.length > 1) {
+    <section class="detail-section">
+      <div class="detail-gallery">
+        @for (img of publication()!.images.slice(1); track img) {
+        <img [src]="img" class="detail-gallery-img" alt="foto receta"/>
+        } @empty {
+        }
+      </div>
+    </section>
+    }
+
+    <hr class="divider"/>
+
+    @if (publication()!.ingredients.length > 0) {
+    <section class="detail-section">
+      <div class="detail-section-box">
+        <div class="detail-section-header">
+          <img src="icons/ingredientes.svg" class="detail-section-icon" alt="ingredientes"/>
+          <span class="detail-section-title">Ingredientes</span>
+        </div>
+        <ul class="detail-ingredients">
+          @for (ing of publication()!.ingredients; track $index) {
+          <li class="detail-ingredient">
+            <span class="detail-ingredient-name">{{ ing.name }}</span>
+            @if (ing.quantity) {
+            <span class="detail-ingredient-qty">{{ ing.quantity }} {{ ing.unit }}</span>
+            }
+          </li>
+          } @empty {
+          }
+        </ul>
+      </div>
+    </section>
+    }
+
+    @if (publication()!.steps.length > 0) {
+    <section class="detail-section">
+      <div class="detail-section-box">
+        <div class="detail-section-header">
+          <img src="icons/cadena-de-valor.svg" class="detail-section-icon" alt="pasos"/>
+          <span class="detail-section-title">Elaboración</span>
+        </div>
+
+        @if (isLoggedIn) {
+        <div class="detail-steps">
+          @for (step of publication()!.steps; track $index) {
+          <div class="detail-step">
+            <div class="detail-step-number">{{ $index + 1 }}</div>
+            <div class="detail-step-content">
+              <p class="detail-step-text">{{ step.text }}</p>
+              @if (step.image) {
+              <img [src]="step.image" class="detail-step-img" alt="foto paso"/>
+              }
+            </div>
+          </div>
+          } @empty {
+          }
+        </div>
+        } @else {
+        <div class="detail-locked">
+          <div class="detail-locked-steps">
+            @for (step of publication()!.steps.slice(0, 2); track $index) {
+            <div class="detail-step">
+              <div class="detail-step-number">{{ $index + 1 }}</div>
+              <div class="detail-step-content">
+                <p class="detail-step-text">{{ step.text }}</p>
+              </div>
+            </div>
+            } @empty {
+            }
+          </div>
+          <div class="detail-locked-overlay">
+            <div class="detail-locked-content">
+              <img src="icons/desbloquear.svg" class="detail-locked-icon" alt="desbloquear"/>
+              <h3 class="detail-locked-title">Únete a Cookee para ver la receta completa</h3>
+              <p class="detail-locked-text">Regístrate gratis y accede a todos los pasos, consejos y
+                comentarios.</p>
+              <div class="detail-locked-actions">
+                <a class="btn btn-primary btn-lg" routerLink="/register">Crear cuenta gratis</a>
+                <a class="btn btn-outline btn-lg" routerLink="/login">Iniciar sesión</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </section>
+    }
+
+    @if ((recommendations().length > 0 || isMyPublication()) && isLoggedIn) {
+    <section class="detail-section">
+      <div class="detail-section-box detail-section-box-tips">
+        <div class="detail-section-header">
+          <img src="icons/miton_one_color.svg" class="detail-section-icon" alt="recomendaciones"/>
+          <span class="detail-section-title">Recomendaciones</span>
+        </div>
+
+        @if (!editingRecommendations()) {
+        <div class="detail-recommendations-list">
+          @for (rec of recommendations(); track $index) {
+          <div class="detail-recommendation-item">
+            <span class="detail-recommendation-dot"></span>
+            <p class="detail-recommendations-text">{{ rec }}</p>
+          </div>
+          } @empty {
+          <p class="detail-recommendations-empty">Aún no hay recomendaciones.</p>
+          }
+        </div>
+        @if (isMyPublication()) {
+        <button class="detail-rec-edit-trigger" (click)="startEditingRecommendations()">
+          <img src="icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
+          Editar recomendaciones
+        </button>
+        }
+        } @else {
+        <div class="detail-rec-editor">
+          <div class="detail-rec-list">
+            @for (rec of recommendations(); track $index) {
+            <div class="detail-rec-row" [class.detail-rec-row--dragging]="dragIndex === $index"
+                 draggable="true" (dragstart)="onDragStart($index)" (dragover)="onDragOver($event, $index)"
+                 (dragend)="onDragEnd()">
+              <img src="icons/tenedor.svg" class="detail-rec-drag-icon" alt="arrastrar"/>
+              <label>
+                <input class="input-base detail-rec-input" [value]="rec"
+                       (input)="updateRecommendation($index, $any($event.target).value)"
+                       placeholder="Escribe una recomendación..."/>
+              </label>
+              <button type="button" class="detail-rec-remove" (click)="removeRecommendation($index)">✕</button>
+            </div>
+            } @empty {
+            }
+          </div>
+
+          <button type="button" class="btn btn-ghost btn-sm detail-rec-add" (click)="addRecommendation()">
+            + Añadir recomendación
+          </button>
+
+          @if (recommendationsError) {
+          <p class="comment-error">{{ recommendationsError }}</p>
+          }
+
+          <div class="detail-rec-actions">
+            <button type="button" class="btn btn-outline btn-sm" (click)="cancelEditingRecommendations()">
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="saveRecommendations()"
+                    [disabled]="savingRecommendations">
+              {{ savingRecommendations ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+    </section>
+    }
+
+    <hr class="divider"/>
+
+    @if (isLoggedIn) {
+    <section class="detail-section" id="comentarios">
+      <div class="detail-section-box">
+        <div class="detail-section-header">
+          <img src="icons/chat-de-burbujas.svg" class="detail-section-icon" alt="comentarios"/>
+          <span class="detail-section-title">{{ comments().length }} Comentarios</span>
+        </div>
+
+        <div class="comments-form">
+          <label>
+            <textarea class="input-base comments-textarea" [(ngModel)]="commentText"
+                      placeholder="Escribe un comentario..." rows="3"></textarea>
+          </label>
+          @if (commentError) {
+          <p class="comment-error">{{ commentError }}</p>
+          }
+          <button class="btn btn-primary" (click)="saveComment()" [disabled]="sendingComment">
+            {{ sendingComment ? 'Enviando...' : 'Comentar' }}
+          </button>
+        </div>
+
+        @if (comments().length === 0) {
+        <p class="comments-empty">Sé el primero en comentar esta receta.</p>
+        }
+
+        <div class="comments-list">
+          @for (comment of comments(); track comment._id) {
+          <div class="comment-item">
+            <a [routerLink]="['/profile', comment.user?._id]" class="comment-avatar-link">
+              @if (comment.user?.image) {
+              <img [src]="comment.user.image" class="comment-avatar" alt="avatar"/>
+              } @else {
+              <div class="comment-avatar comment-avatar-placeholder"></div>
+              }
+            </a>
+            <div class="comment-body">
+              <div class="comment-header">
+                <a [routerLink]="['/profile', comment.user?._id]" class="comment-author">
+                  {{ comment.user?.name }} {{ comment.user?.surname }}
+                </a>
+                <div class="nick-wrap">
+                  <span class="comment-nick">&#64;{{ comment.user?.nick }}</span>
+                  @if (comment.user?.role === 'ROLE_VERIFIED' || comment.user?.role === 'ROLE_ADMIN') {
+                  <span class="verified-wrap">
+                    <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                  </span>
+                  }
+                  @if (isPublicationAuthor(comment.user?._id)) {
+                  <span class="comment-creator-badge">Creador</span>
+                  }
+                </div>
+                <span class="comment-date">{{ getTimeAgo(comment.createdAt) }}</span>
+                @if (canDelete(comment)) {
+                <button class="comment-delete"
+                        (click)="confirmDeleteComment(comment._id, undefined, comment.replies)">✕
+                </button>
+                }
+              </div>
+              <p class="comment-text">{{ comment.text }}</p>
+
+              <button class="comment-reply-btn" (click)="startReply(comment._id)">Responder</button>
+
+              @if (replyingTo === comment._id) {
+              <div class="comment-reply-form">
+                <label>
+                  <textarea class="input-base comment-reply-textarea" [(ngModel)]="replyText"
+                            placeholder="Escribe una respuesta..." rows="2"></textarea>
+                </label>
+                @if (replyError) {
+                <p class="comment-error">{{ replyError }}</p>
+                }
+                <div class="comment-reply-actions">
+                  <button class="btn btn-ghost btn-sm" (click)="cancelReply()">Cancelar</button>
+                  <button class="btn btn-primary btn-sm" (click)="saveReply(comment._id)"
+                          [disabled]="sendingReply">
+                    {{ sendingReply ? 'Enviando...' : 'Responder' }}
+                  </button>
+                </div>
+              </div>
+              }
+
+              @if (comment.replies && comment.replies.length > 0) {
+              <div class="comment-replies">
+                @for (reply of comment.replies; track reply._id) {
+                <div class="comment-item comment-item--reply">
+                  <a [routerLink]="['/profile', reply.user?._id]" class="comment-avatar-link">
+                    @if (reply.user?.image) {
+                    <img [src]="reply.user.image" class="comment-avatar comment-avatar--sm" alt="avatar"/>
+                    } @else {
+                    <div class="comment-avatar comment-avatar--sm comment-avatar-placeholder"></div>
+                    }
+                  </a>
+                  <div class="comment-body">
+                    <div class="comment-header">
+                      <a [routerLink]="['/profile', reply.user?._id]" class="comment-author">
+                        {{ reply.user?.name }} {{ reply.user?.surname }}
+                      </a>
+                      <div class="nick-wrap">
+                        <span class="comment-nick">&#64;{{ reply.user?.nick }}</span>
+                        @if (reply.user?.role === 'ROLE_VERIFIED' || reply.user?.role === 'ROLE_ADMIN') {
+                        <span class="verified-wrap">
+                          <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                        </span>
+                        }
+                        @if (isPublicationAuthor(reply.user?._id)) {
+                        <span class="comment-creator-badge">Creador</span>
+                        }
+                      </div>
+                      <span class="comment-date">{{ getTimeAgo(reply.createdAt) }}</span>
+                      @if (canDelete(reply)) {
+                      <button class="comment-delete" (click)="confirmDeleteComment(reply._id, comment._id)">
+                        ✕
+                      </button>
+                      }
+                    </div>
+                    <p class="comment-text">{{ reply.text }}</p>
+                    <button class="comment-reply-btn" (click)="startReply(comment._id, reply.user?.nick)">
+                      Responder
+                    </button>
+                  </div>
+                </div>
+                } @empty {
+                }
+              </div>
+              }
+
+            </div>
+          </div>
+          } @empty {
+          }
+        </div>
+      </div>
+    </section>
+    } @else {
+    <div class="detail-locked-comments">
+      <p><a routerLink="/register">Regístrate</a> para ver y escribir comentarios.</p>
+    </div>
+    }
+
+  </div>
+
+  @if (showDeleteCommentModal()) {
+  <app-confirm-modal
+    title="¿Eliminar comentario?"
+    [message]="hasReplies ? 'Este comentario tiene respuestas. Si lo eliminas se borrarán también.' : '¿Seguro que quieres eliminar este comentario?'"
+    confirmText="Sí, eliminar"
+    cancelText="Cancelar"
+    (confirmed)="deleteComment()"
+    (cancelled)="showDeleteCommentModal.set(false)">
+  </app-confirm-modal>
+  }
+
+  @if (showDeleteModal()) {
+  <app-confirm-modal
+    title="¿Eliminar receta?"
+    message="Se eliminará permanentemente. Esta acción no tiene vuelta atrás."
+    confirmText="Sí, eliminar"
+    cancelText="Cancelar"
+    (confirmed)="deletePublication()"
+    (cancelled)="showDeleteModal.set(false)">
+  </app-confirm-modal>
+  }
+  }
+
+</div>

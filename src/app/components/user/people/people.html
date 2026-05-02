@@ -1,0 +1,111 @@
+<div class="page-container people-page">
+
+  <div class="people-header">
+    <h1 class="title-section">
+      Encuentra <span class="title-highlight">cocinillas</span>
+    </h1>
+    <p class="subtitle">Descubre usuarios, sigue perfiles y conecta con la comunidad.</p>
+  </div>
+
+  @if (isLoggedIn) {
+  <div class="people-search">
+    <label>
+      <input
+        class="input-base people-search-input"
+        [(ngModel)]="searchInput"
+        placeholder="Buscar por nombre o nick..."
+        (keyup.enter)="onSearch()"/>
+    </label>
+    <button class="btn btn-primary btn-sm" (click)="onSearch()">Buscar</button>
+    @if (search) {
+    <button class="btn btn-ghost btn-sm" (click)="clearSearch()">✕ Limpiar</button>
+    }
+  </div>
+  }
+
+  @if (!isLoggedIn) {
+  <div class="card-base people-locked">
+    <img src="icons/cuenta.svg" class="people-locked-icon" alt="usuarios"/>
+    <h2 class="people-locked-title">Descubre a los cocinillas</h2>
+    <p class="people-locked-text">Regístrate gratis y conecta con otros amantes de la cocina.</p>
+    <div class="people-locked-actions">
+      <a class="btn btn-primary btn-lg" routerLink="/register">Crear cuenta gratis</a>
+      <a class="btn btn-outline btn-lg" routerLink="/login">Iniciar sesión</a>
+    </div>
+  </div>
+  }
+
+  @if (loading()) {
+  <app-loading-spinner/>
+  }
+
+  @if (!loading() && users().length > 0) {
+  <div class="people-list">
+    @for (user of users(); track user._id) {
+    <div class="people-row card-base">
+
+      <div class="people-user-info" [routerLink]="['/profile', user._id]">
+        <div class="people-avatar-wrap">
+          @if (user.image) {
+          <img [src]="user.image" class="people-avatar" alt="avatar"/>
+          } @else {
+          <div class="people-avatar people-avatar--placeholder"></div>
+          }
+          @if (isFriend(user._id)) {
+          <span class="people-friend-badge" title="Os seguís mutuamente">★</span>
+          }
+        </div>
+
+        <div class="people-user-text">
+          <h3 class="people-name">{{ user.name }} {{ user.surname }}</h3>
+          <div class="people-nick-wrap">
+            <p class="people-nick">&#64;{{ user.nick }}</p>
+            @if (user.role === 'ROLE_VERIFIED' || user.role === 'ROLE_ADMIN') {
+            <span class="verified-wrap">
+                    <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+            </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="people-user-action">
+        @if (isFriend(user._id)) {
+        <button class="people-btn people-btn--friend" (click)="unfollow(user._id)">
+          <span class="people-btn-label">Amigos</span>
+          <span class="people-btn-hover">Dejar de seguir</span>
+        </button>
+        } @else if (isFollowing(user._id)) {
+        <button class="people-btn people-btn--following" (click)="unfollow(user._id)">
+          <span class="people-btn-label">Siguiendo</span>
+          <span class="people-btn-hover">Dejar de seguir</span>
+        </button>
+        } @else {
+        <button class="people-btn people-btn--follow" (click)="follow(user._id)">
+          + Seguir
+        </button>
+        }
+      </div>
+    </div>
+    } @empty {
+    }
+  </div>
+
+  <div class="people-pagination">
+    <button class="btn btn-outline btn-sm" (click)="prevPage()" [disabled]="page === 1">
+      ← Anterior
+    </button>
+    <span class="people-page-indicator">{{ page }} / {{ totalPages }}</span>
+    <button class="btn btn-outline btn-sm" (click)="nextPage()" [disabled]="page === totalPages">
+      Siguiente →
+    </button>
+  </div>
+  }
+
+  @if (!loading() && users().length === 0 && isLoggedIn) {
+  <div class="card-base people-empty">
+    <p>No hay más usuarios para mostrar.</p>
+  </div>
+  }
+
+</div>
