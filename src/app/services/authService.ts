@@ -49,4 +49,18 @@ export class AuthService {
     localStorage.removeItem('user');
     this.identitySubject.next(null);
   }
+
+  refreshIdentity(): void {
+    const identity = this.getIdentity();
+    if (!identity?._id) return;
+
+    this.http.get(`${this.apiUrl}/${identity._id}`).subscribe({
+      next: (response: any) => {
+        if (response.user) {
+          this.setIdentity(response.user);
+        }
+      },
+      error: () => {}
+    });
+  }
 }
