@@ -21,6 +21,8 @@ export class MyDataComponent {
   errorMessage: string = '';
   selectedFile: File | null = null;
   previewUrl: string | null = null;
+  uploadingAvatar: boolean = false;
+  avatarStatus: string = '';
 
   myDataForm: FormGroup = this.formBuilder.group({
     name: [this.identity?.name || '', [Validators.required, FormValidators.notOnlyWhiteSpace]],
@@ -41,19 +43,6 @@ export class MyDataComponent {
         this.identity = response.user;
         this.authService.setIdentity(response.user);
 
-        if (this.selectedFile) {
-          this.userService.uploadAvatar(this.selectedFile).subscribe({
-            next: (avatarResponse: any) => {
-              this.identity = avatarResponse.user;
-              this.authService.setIdentity(avatarResponse.user);
-              this.previewUrl = null;
-              this.selectedFile = null;
-            },
-            error: (error: any) => {
-              console.error(error);
-            }
-          });
-        }
       },
       error: (error: any) => {
         if (error.status === 409) {
@@ -72,14 +61,35 @@ export class MyDataComponent {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result as string;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
+    if (!input.files || input.files.length === 0) return;
+
+    this.selectedFile = input.files[0];
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewUrl = reader.result as string;
+    };
+    reader.readAsDataURL(this.selectedFile);
+
+    this.uploadingAvatar = true;
+    this.avatarStatus = '';
+
+    this.userService.uploadAvatar(this.selectedFile).subscribe({
+      next: (response: any) => {
+        this.identity = response.user;
+        this.authService.setIdentity(response.user);
+        this.previewUrl = null;
+        this.selectedFile = null;
+        this.uploadingAvatar = false;
+        this.avatarStatus = 'success';
+      },
+      error: () => {
+        this.uploadingAvatar = false;
+        this.avatarStatus = 'error';
+        this.previewUrl = null;
+        this.selectedFile = null;
+      }
+    });
   }
 
   cancelAvatarChange(): void {
