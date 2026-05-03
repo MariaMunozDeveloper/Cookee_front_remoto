@@ -16,7 +16,7 @@
   @if (activeTab === 'dashboard') {
 
   @if (loadingStats()) {
-  <app-loading-spinner/>
+  <app-loading-spinner></app-loading-spinner>
   }
 
   @if (!loadingStats() && stats) {
@@ -38,6 +38,7 @@
       <span class="admin-stat-label">Likes</span>
     </div>
   </div>
+  }
 
   <div class="admin-charts-header">
     <h2 class="admin-charts-title">Actividad de la comunidad</h2>
@@ -52,7 +53,7 @@
   </div>
 
   @if (loadingCharts()) {
-  <app-loading-spinner/>
+  <app-loading-spinner></app-loading-spinner>
   }
 
   @if (!loadingCharts()) {
@@ -89,7 +90,6 @@
   </div>
   }
   }
-  }
 
   @if (activeTab === 'users') {
 
@@ -105,7 +105,7 @@
   </div>
 
   @if (loadingUsers()) {
-  <app-loading-spinner/>
+  <app-loading-spinner></app-loading-spinner>
   }
 
   @if (!loadingUsers() && users().length === 0) {
@@ -198,7 +198,7 @@
       </div>
 
       @if (loadingUserStats()) {
-      <app-loading-spinner/>
+      <app-loading-spinner></app-loading-spinner>
       }
 
       @if (!loadingUserStats() && selectedUserStats) {

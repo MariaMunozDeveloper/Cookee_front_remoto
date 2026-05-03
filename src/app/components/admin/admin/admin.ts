@@ -1,23 +1,12 @@
-import {
-  inject,
-  Component,
-  signal,
-  WritableSignal,
-  OnInit,
-  AfterViewInit,
-  OnDestroy,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal, WritableSignal, ChangeDetectorRef} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {AdminService} from '../../../services/adminService';
 import {ConfirmModalComponent} from '../../shared/confirm-modal/confirm-modal';
 import {LoadingSpinner} from '../../shared/loading-spinner/loading-spinner';
 import {Chart, registerables} from 'chart.js';
-import {interval, Subscription} from 'rxjs';
+import {interval, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
 
 Chart.register(...registerables);
 
@@ -30,12 +19,13 @@ Chart.register(...registerables);
 })
 export class AdminComponent implements OnInit, OnDestroy {
   private readonly adminService: AdminService = inject(AdminService);
+  private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   activeTab: 'dashboard' | 'users' = 'dashboard';
 
   stats: any = null;
   loadingStats: WritableSignal<boolean> = signal<boolean>(true);
-  loadingCharts: WritableSignal<boolean> = signal<boolean>(false);
+  loadingCharts: WritableSignal<boolean> = signal<boolean>(true);
   chartPeriod: string = 'week';
   private destroy$ = new Subject<void>();
 
@@ -79,8 +69,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       if (this.activeTab === 'dashboard') {
-        this.loadStats();
-        this.loadCharts();
+        this.loadStats(false);
+        this.loadCharts(false);
       }
     });
   }
@@ -111,27 +101,42 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.loadCharts();
   }
 
-  loadStats(): void {
-    this.loadingStats.set(true);
+  loadStats(showSpinner: boolean = true): void {
+    if (showSpinner) {
+      this.loadingStats.set(true);
+    }
     this.adminService.getStats().subscribe({
       next: (response: any) => {
         this.stats = response.stats;
-        this.loadingStats.set(false);
+        if (showSpinner) {
+          this.loadingStats.set(false);
+        }
       },
       error: () => {
-        this.loadingStats.set(false);
+        if (showSpinner) {
+          this.loadingStats.set(false);
+        }
       }
     });
   }
 
-  loadCharts(): void {
-    this.loadingCharts.set(true);
+  loadCharts(showSpinner: boolean = true): void {
+    if (showSpinner) {
+      this.loadingCharts.set(true);
+    }
     this.adminService.getChartData(this.chartPeriod).subscribe({
       next: (response: any) => {
-        this.loadingCharts.set(false);
-        setTimeout(() => this.renderCharts(response), 300);
+        if (showSpinner) {
+          this.loadingCharts.set(false);
+          this.cdr.detectChanges();
+        }
+        this.renderCharts(response);
       },
-      error: () => { this.loadingCharts.set(false); }
+      error: () => {
+        if (showSpinner) {
+          this.loadingCharts.set(false);
+        }
+      }
     });
   }
 
