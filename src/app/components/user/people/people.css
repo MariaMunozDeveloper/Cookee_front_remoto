@@ -275,4 +275,8 @@
   .people-search-input {
     max-width: 100%;
   }
+
+  .scroll-anchor {
+    height: 1px;
+  }
 }

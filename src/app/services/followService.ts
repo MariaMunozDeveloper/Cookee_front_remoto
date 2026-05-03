@@ -20,15 +20,15 @@ export class FollowService {
 
   getFollowing(userId?: string, page: number = 1): Observable<any> {
     const url = userId
-      ? `${this.apiUrl}/following/${userId}?page=${page}`
-      : `${this.apiUrl}/following?page=${page}`;
+      ? `${this.apiUrl}/following/${userId}?page=${page}&limit=10`
+      : `${this.apiUrl}/following?page=${page}&limit=10`;
     return this.http.get(url);
   }
 
   getFollowers(userId?: string, page: number = 1): Observable<any> {
     const url = userId
-      ? `${this.apiUrl}/followers/${userId}?page=${page}`
-      : `${this.apiUrl}/followers?page=${page}`;
+      ? `${this.apiUrl}/followers/${userId}?page=${page}&limit=10`
+      : `${this.apiUrl}/followers?page=${page}&limit=10`;
     return this.http.get(url);
   }
 }
