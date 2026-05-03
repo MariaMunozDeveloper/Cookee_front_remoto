@@ -43,13 +43,6 @@ export class AuthService {
     this.identitySubject.next(user);
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
-    this.identitySubject.next(null);
-  }
-
   refreshIdentity(): void {
     const identity = this.getIdentity();
     if (!identity?._id) return;
@@ -63,4 +56,13 @@ export class AuthService {
       error: () => {}
     });
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    this.identitySubject.next(null);
+  }
+
+
 }
