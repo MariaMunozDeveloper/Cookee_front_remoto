@@ -29,13 +29,17 @@
               @if (identity?.role === 'ROLE_VERIFIED' || identity?.role === 'ROLE_ADMIN') {
               <span class="verified-wrap">
                   <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
-                </span>
+              </span>
               }
             </div>
-            @if (previewUrl) {
-            <button type="button" class="btn btn-outline mydata-cancel-btn" (click)="cancelAvatarChange()">
-              Cancelar cambio de foto
-            </button>
+            @if (uploadingAvatar) {
+            <p class="mydata-avatar-feedback mydata-avatar-uploading">Subiendo foto...</p>
+            }
+            @if (avatarStatus === 'success') {
+            <p class="mydata-avatar-feedback mydata-avatar-success">✓ Foto actualizada</p>
+            }
+            @if (avatarStatus === 'error') {
+            <p class="mydata-avatar-feedback mydata-avatar-error">No se ha podido guardar la foto, inténtalo de nuevo</p>
             }
           </div>
         </div>
