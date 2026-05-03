@@ -155,3 +155,20 @@
   gap: 6px;
   margin-top: 4px;
 }
+
+.mydata-avatar-feedback {
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+.mydata-avatar-uploading {
+  color: var(--color-muted);
+}
+
+.mydata-avatar-success {
+  color: #2e7d32;
+}
+
+.mydata-avatar-error {
+  color: #e74c3c;
+}
