@@ -2,7 +2,6 @@
   <div class="page-container">
     <div class="auth-wrapper">
       <div class="card-base auth-card">
-
         <h1 class="title-section auth-title">
           Inicia sesión en <span class="title-highlight">Cookee</span>
         </h1>
@@ -39,17 +38,19 @@
             <label class="form-label">Contraseña</label>
 
             <div class="password-wrapper">
-              <input
-                [type]="showPassword ? 'text' : 'password'"
-                class="input-base"
-                formControlName="password"
-                placeholder="Escribe tu contraseña"
-              />
+              <label>
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="input-base"
+                  formControlName="password"
+                  placeholder="Escribe tu contraseña"
+                />
+              </label>
               <button
                 type="button"
                 class="password-toggle"
                 (click)="togglePassword()">
-                <img [src]="showPassword ? 'icons/ojo_blocked.svg' : 'icons/ojo.svg'" class="password-toggle-icon"
+                <img [src]="showPassword ? 'assets/icons/ojo_blocked.svg' : 'assets/icons/ojo.svg'" class="password-toggle-icon"
                      alt="ver contraseña"/>
               </button>
             </div>
@@ -81,7 +82,6 @@
           ¿Todavía no tienes cuenta?
           <a class="auth-link" routerLink="/register">Crear cuenta</a>
         </p>
-
       </div>
     </div>
   </div>

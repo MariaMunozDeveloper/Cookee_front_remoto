@@ -12,12 +12,14 @@
 
     @if (!sent) {
     <div class="send-form">
-      <textarea
-        class="input-base send-textarea"
-        [(ngModel)]="messageText"
-        placeholder="Escribe tu mensaje..."
-        rows="5">
-      </textarea>
+      <label>
+        <textarea
+          class="input-base send-textarea"
+          [(ngModel)]="messageText"
+          placeholder="Escribe tu mensaje..."
+          rows="5">
+        </textarea>
+      </label>
 
       @if (errorMessage) {
       <p class="form-error">{{ errorMessage }}</p>

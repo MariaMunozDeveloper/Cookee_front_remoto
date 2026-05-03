@@ -25,7 +25,7 @@
 
   @if (!isLoggedIn) {
   <div class="card-base people-locked">
-    <img src="icons/cuenta.svg" class="people-locked-icon" alt="usuarios"/>
+    <img src="assets/icons/cuenta.svg" class="people-locked-icon" alt="usuarios"/>
     <h2 class="people-locked-title">Descubre a los cocinillas</h2>
     <p class="people-locked-text">Regístrate gratis y conecta con otros amantes de la cocina.</p>
     <div class="people-locked-actions">
@@ -36,7 +36,7 @@
   }
 
   @if (loading()) {
-  <app-loading-spinner/>
+  <app-loading-spinner></app-loading-spinner>
   }
 
   @if (!loading() && users().length > 0) {
@@ -62,7 +62,7 @@
             <p class="people-nick">&#64;{{ user.nick }}</p>
             @if (user.role === 'ROLE_VERIFIED' || user.role === 'ROLE_ADMIN') {
             <span class="verified-wrap">
-                    <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                    <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
             </span>
             }
           </div>

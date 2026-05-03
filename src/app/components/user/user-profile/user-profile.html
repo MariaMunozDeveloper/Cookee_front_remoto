@@ -2,7 +2,7 @@
 
   @if (loading()) {
   <div class="page-container">
-    <app-loading-spinner/>
+    <app-loading-spinner></app-loading-spinner>
   </div>
   }
 
@@ -24,7 +24,7 @@
         <p class="profile-nick">&#64;{{ profileUser.nick }}</p>
         @if (profileUser.role === 'ROLE_VERIFIED' || profileUser.role === 'ROLE_ADMIN') {
         <span class="verified-wrap">
-              <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+              <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
             </span>
         }
       </div>
@@ -76,7 +76,7 @@
         class="profile-tab"
         [class.profile-tab--active]="activeTab === 'recipes'"
         (click)="setTab('recipes')">
-        <img src="icons/flaticon.svg" class="profile-tab-icon" alt="recetas"/>
+        <img src="assets/icons/flaticon.svg" class="profile-tab-icon" alt="recetas"/>
         Recetas
       </button>
       @if (isOwnProfile) {
@@ -84,7 +84,7 @@
         class="profile-tab"
         [class.profile-tab--active]="activeTab === 'favorites'"
         (click)="setTab('favorites')">
-        <img src="icons/favorito (1).svg" class="profile-tab-icon" alt="favoritos"/>
+        <img src="assets/icons/favorito (1).svg" class="profile-tab-icon" alt="favoritos"/>
         Favoritos
       </button>
       }
@@ -104,10 +104,10 @@
 
         <div class="profile-recipe-cover">
           @if (pub.images && pub.images.length > 0) {
-          <img [src]="pub.images[0]" [alt]="pub.title" class="profile-recipe-img"/>
+          <img [src]="pub.images[0]" [alt]="pub.title" class="profile-recipe-img" alt=""/>
           } @else {
           <div class="profile-recipe-placeholder">
-            <img src="icons/cooking-time.svg" class="profile-placeholder-icon" alt="receta"/>
+            <img src="assets/icons/cooking-time.svg" class="profile-placeholder-icon" alt="receta"/>
           </div>
           }
           @if (pub.hashtags && pub.hashtags.length > 0) {
@@ -120,19 +120,19 @@
           <div class="profile-recipe-stats">
             <button class="profile-like-btn" (click)="toggleLike(pub._id, $event)">
               <img
-                [src]="isLiked(pub) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                [src]="isLiked(pub) ? 'assets/icons/corazon.svg' : 'assets/icons/corazon_line.svg'"
                 class="recipe-stat-icon" alt="like"/>
               {{ pub.likes.length }}
             </button>
             @if (pub.raciones) {
             <span class="recipe-stat">
-              <img src="icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
+              <img src="assets/icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
                       {{ pub.raciones }} rac.
             </span>
             }
             @if (pub.tiempoHorno) {
             <span class="recipe-stat">
-              <img src="icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
+              <img src="assets/icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
                       {{ pub.tiempoHorno }} min
             </span>
             }
@@ -142,10 +142,10 @@
           <div class="profile-recipe-overlay">
             <a class="btn btn-outline btn-sm" [routerLink]="['/edit-recipe', pub._id]"
                (click)="$event.stopPropagation()">
-              <img src="icons/lapiz.svg" class="profile-overlay-icon" alt="editar"/>
+              <img src="assets/icons/lapiz.svg" class="profile-overlay-icon" alt="editar"/>
             </a>
             <button class="btn btn-danger btn-sm" (click)="confirmDelete(pub._id); $event.stopPropagation()">
-              <img src="icons/letra-x.svg" class="profile-overlay-icon" alt="eliminar"/>
+              <img src="assets/icons/letra-x.svg" class="profile-overlay-icon" alt="eliminar"/>
             </button>
           </div>
           }
@@ -161,7 +161,7 @@
     @if (activeTab === 'favorites') {
 
     @if (loadingFavorites()) {
-    <app-loading-spinner/>
+    <app-loading-spinner></app-loading-spinner>
     }
 
     @if (!loadingFavorites() && favorites().length === 0) {
@@ -178,10 +178,10 @@
 
         <div class="profile-recipe-cover">
           @if (getCover(pub)) {
-          <img [src]="getCover(pub)" [alt]="pub.title" class="profile-recipe-img"/>
+          <img [src]="getCover(pub)" [alt]="pub.title" class="profile-recipe-img" alt=""/>
           } @else {
           <div class="profile-recipe-placeholder">
-            <img src="icons/cooking-time.svg" class="profile-placeholder-icon" alt="receta"/>
+            <img src="assets/icons/cooking-time.svg" class="profile-placeholder-icon" alt="receta"/>
           </div>
           }
           @if (pub.hashtags && pub.hashtags.length > 0) {
@@ -191,7 +191,7 @@
             class="profile-favorite-remove"
             title="Quitar de favoritos"
             (click)="removeFavorite(pub._id, $event)">
-            <img src="icons/favorito (1).svg" class="profile-favorite-remove-icon" alt="quitar favorito"/>
+            <img src="assets/icons/favorito (1).svg" class="profile-favorite-remove-icon" alt="quitar favorito"/>
           </button>
         </div>
 
@@ -200,19 +200,19 @@
           <div class="profile-recipe-stats">
             <button class="profile-like-btn" (click)="toggleLike(pub._id, $event)">
               <img
-                [src]="isLiked(pub) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                [src]="isLiked(pub) ? 'assets/icons/corazon.svg' : 'assets/icons/corazon_line.svg'"
                 class="recipe-stat-icon" alt="like"/>
               {{ pub.likes.length }}
             </button>
             @if ((pub | asAny).raciones) {
             <span class="recipe-stat">
-              <img src="icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
+              <img src="assets/icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
                         {{ (pub | asAny).raciones }} rac.
             </span>
             }
             @if ((pub | asAny).tiempoHorno) {
             <span class="recipe-stat">
-              <img src="icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
+              <img src="assets/assets/icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
                         {{ (pub | asAny).tiempoHorno }} min
             </span>
             }

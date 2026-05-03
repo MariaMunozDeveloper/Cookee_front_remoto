@@ -32,7 +32,7 @@
           <img
             [src]="getCover(publication)"
             [alt]="publication.title"
-            class="feed-recipe-img"/>
+            class="feed-recipe-img" alt=""/>
 
           } @else {
           <div class="feed-recipe-img-placeholder"></div>
@@ -41,7 +41,7 @@
           <button class="favorite-btn"
                   (click)="favoriteService.toggleFavorite(publication._id); $event.stopPropagation()">
             <img
-              [src]="favoriteService.isFavorite(publication._id) ? 'icons/favorito (1).svg' : 'icons/favorito.svg'"
+              [src]="favoriteService.isFavorite(publication._id) ? 'assets/icons/favorito (1).svg' : 'assets/icons/favorito.svg'"
               class="favorite-btn-icon"
               alt="favorito"/>
           </button>
@@ -66,7 +66,7 @@
                 @if (getAuthor(publication)?.role === 'ROLE_VERIFIED' || getAuthor(publication)?.role === 'ROLE_ADMIN')
                 {
                 <span class="verified-wrap">
-                      <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                      <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
                     </span>
                 }
               </div>
@@ -83,25 +83,25 @@
           <div class="feed-recipe-stats">
             @if (publication.raciones) {
             <span class="recipe-stat">
-              <img src="icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
+              <img src="assets/icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
                   {{ publication.raciones }} rac.
             </span>
             }
             @if (publication.tiempoHorno) {
             <span class="recipe-stat">
-              <img src="icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
+              <img src="assets/icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
                   {{ publication.tiempoHorno }} min
             </span>
             }
             @if (publication.temperaturaHorno) {
             <span class="recipe-stat">
-              <img src="icons/termometro_1.svg" class="recipe-stat-icon" alt="temperatura"/>
+              <img src="assets/icons/termometro_1.svg" class="recipe-stat-icon" alt="temperatura"/>
                   {{ publication.temperaturaHorno }}°C
             </span>
             }
             @if (publication.ingredients.length) {
             <span class="recipe-stat">
-              <img src="icons/ingredientes.svg" class="recipe-stat-icon" alt="ingredientes"/>
+              <img src="assets/icons/ingredientes.svg" class="recipe-stat-icon" alt="ingredientes"/>
                   {{ publication.ingredients.length }} ing.
             </span>
             }
@@ -119,7 +119,7 @@
             <div class="feed-recipe-footer-icons">
               <button class="feed-like-btn" (click)="toggleLike(publication._id, $event)">
                 <img
-                  [src]="isLiked(publication) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                  [src]="isLiked(publication) ? 'assets/icons/corazon.svg' : 'assets/icons/corazon_line.svg'"
                   class="recipe-stat-icon feed-like-icon"
                   alt="like"
                 />
@@ -130,7 +130,7 @@
                  [routerLink]="['/publication', publication._id]"
                  fragment="comentarios"
                  (click)="$event.stopPropagation()">
-                <img src="icons/chat-de-burbujas.svg" class="recipe-stat-icon" alt="comentarios"/>
+                <img src="assets/icons/chat-de-burbujas.svg" class="recipe-stat-icon" alt="comentarios"/>
                 {{ (publication | asAny).commentsCount ?? 0 }}
               </a>
             </div>
@@ -158,7 +158,7 @@
       }
 
       @if (loading()) {
-      <app-loading-spinner/>
+      <app-loading-spinner></app-loading-spinner>
       }
 
       @if (!hasMore && publications().length > 0 && !loading()) {

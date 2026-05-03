@@ -15,7 +15,9 @@
 
           <div class="form-group">
             <label class="form-label">Nombre</label>
-            <input class="input-base" formControlName="name" placeholder="Escribe tu nombre"/>
+            <label>
+              <input class="input-base" formControlName="name" placeholder="Escribe tu nombre"/>
+            </label>
 
             @if (registerForm.get('name')?.touched) {
             <div class="form-error">
@@ -51,7 +53,9 @@
             <label class="form-label">Nick</label>
             <div class="nick-input-wrap">
               <span class="nick-prefix">&#64;</span>
-              <input class="input-base nick-input" formControlName="nick" placeholder="nick"/>
+              <label>
+                <input class="input-base nick-input" formControlName="nick" placeholder="nick"/>
+              </label>
             </div>
 
             @if (registerForm.get('nick')?.touched) {
@@ -92,7 +96,9 @@
 
           <div class="form-group">
             <label class="form-label">Contraseña</label>
-            <input type="password" class="input-base" formControlName="password" placeholder="Crea una contraseña"/>
+            <label>
+              <input type="password" class="input-base" formControlName="password" placeholder="Crea una contraseña"/>
+            </label>
 
             @if (registerForm.get('password')?.touched) {
             <div class="form-error">
@@ -113,7 +119,6 @@
             Crear cuenta
           </button>
         </form>
-
         <p class="auth-footer-text">
           ¿Ya tienes cuenta?
           <a class="auth-link" routerLink="/login">Inicia sesión</a>

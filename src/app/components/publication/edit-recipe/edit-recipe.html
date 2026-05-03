@@ -2,7 +2,7 @@
 
   @if (loading()) {
   <div class="page-container">
-    <app-loading-spinner/>
+    <app-loading-spinner></app-loading-spinner>
   </div>
   }
 
@@ -47,7 +47,9 @@
 
         <div class="form-group">
           <label class="form-label">Título *</label>
-          <input class="input-base" formControlName="title" placeholder="Ej: Tarta de queso al horno"/>
+          <label>
+            <input class="input-base" formControlName="title" placeholder="Ej: Tarta de queso al horno"/>
+          </label>
           @if (recipeForm.get('title')?.touched) {
           <div class="form-error">
             @if (recipeForm.get('title')?.errors?.['required']) {
@@ -98,18 +100,24 @@
         <div class="edit-info-grid">
           <div class="form-group">
             <label class="form-label">Raciones</label>
-            <input class="input-base" type="number" formControlName="raciones" placeholder="4" min="1"/>
+            <label>
+              <input class="input-base" type="number" formControlName="raciones" placeholder="4" min="1"/>
+            </label>
             @if (recipeForm.get('raciones')?.touched && recipeForm.get('raciones')?.errors?.['minValue']) {
             <div class="form-error"><span>Mínimo 1 ración</span></div>
             }
           </div>
           <div class="form-group">
             <label class="form-label">Tiempo horno (min)</label>
-            <input class="input-base" type="number" formControlName="tiempoHorno" placeholder="30" min="0"/>
+            <label>
+              <input class="input-base" type="number" formControlName="tiempoHorno" placeholder="30" min="0"/>
+            </label>
           </div>
           <div class="form-group">
             <label class="form-label">Temperatura (°C)</label>
-            <input class="input-base" type="number" formControlName="temperaturaHorno" placeholder="180" min="0"/>
+            <label>
+              <input class="input-base" type="number" formControlName="temperaturaHorno" placeholder="180" min="0"/>
+            </label>
           </div>
         </div>
 
@@ -140,11 +148,13 @@
           <label class="form-label">Hashtags</label>
           <div class="nick-input-wrap">
             <span class="nick-prefix">#</span>
-            <input
-              class="nick-input"
-              placeholder="Escribe y pulsa espacio o Enter para añadir"
-              (keyup)="onHashtagInput($event)"
-              [value]="hashtagInput"/>
+            <label>
+              <input
+                class="nick-input"
+                placeholder="Escribe y pulsa espacio o Enter para añadir"
+                (keyup)="onHashtagInput($event)"
+                [value]="hashtagInput"/>
+            </label>
           </div>
           @if (hashtags.length > 0) {
           <div class="hashtag-preview">
@@ -174,7 +184,9 @@
         @for (ingredient of ingredients.controls; track $index) {
         <div class="ingredient-row" [formGroupName]="$index">
           <div class="form-group ingredient-name">
-            <input class="input-base" formControlName="name" placeholder="Ingrediente *"/>
+            <label>
+              <input class="input-base" formControlName="name" placeholder="Ingrediente *"/>
+            </label>
             @if (ingredient.get('name')?.touched) {
             <div class="form-error">
               @if (ingredient.get('name')?.errors?.['required']) {
@@ -187,7 +199,9 @@
             }
           </div>
           <div class="form-group ingredient-qty">
-            <input class="input-base" type="number" formControlName="quantity" placeholder="Cantidad" min="0"/>
+            <label>
+              <input class="input-base" type="number" formControlName="quantity" placeholder="Cantidad" min="0"/>
+            </label>
           </div>
           <div class="form-group ingredient-unit">
             <label>
@@ -227,8 +241,11 @@
           <div class="step-number">{{ $index + 1 }}</div>
           <div class="step-content">
             <div class="form-group">
-              <textarea class="input-base recipe-textarea" formControlName="text"
-                        [placeholder]="'Describe el paso ' + ($index + 1) + '...'" rows="2"></textarea>
+              <label>
+                <textarea class="input-base recipe-textarea" formControlName="text"
+                  [placeholder]="'Describe el paso ' + ($index + 1) + '...'" rows="2">
+                </textarea>
+              </label>
               <div class="step-image-wrap">
                 @if (stepImagePreviews[$index]) {
                 <div class="step-img-preview-wrap">
@@ -237,7 +254,7 @@
                 </div>
                 } @else {
                 <label class="step-img-upload-btn" title="Añadir foto a este paso">
-                  <img src="icons/camara.svg" class="step-img-upload-icon" alt="añadir foto"/>
+                  <img src="assets/icons/camara.svg" class="step-img-upload-icon" alt="añadir foto"/>
                   <input type="file" accept="image/*" (change)="onStepImageSelected($event, $index)" hidden/>
                 </label>
                 }
@@ -265,7 +282,6 @@
         <button type="button" class="btn btn-outline recipe-add-btn" (click)="addStep()">
           + Añadir paso
         </button>
-
       </div>
       }
 

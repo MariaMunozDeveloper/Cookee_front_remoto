@@ -22,7 +22,7 @@
     <div class="home-hero-circles">
       @for (circle of heroCircles; track $index) {
       <div class="home-hero-circle-wrap home-hero-circle-wrap--{{ $index + 1 }}">
-        <img [src]="circle.src" class="home-hero-circle-img" [alt]="circle.type"/>
+        <img [src]="circle.src" class="home-hero-circle-img" [alt]="circle.type" alt=""/>
       </div>
       }
     </div>
@@ -35,7 +35,7 @@
 
     <div class="home-section-header">
       <div class="home-section-title-wrap">
-        <img src="icons/fuego.svg" class="home-section-icon" alt="trending"/>
+        <img src="assets/icons/fuego.svg" class="home-section-icon" alt="trending"/>
         <h2 class="home-section-title">En <em>tendencia</em></h2>
       </div>
       <a class="btn btn-ghost btn-sm" routerLink="/explore">Ver más →</a>
@@ -46,7 +46,7 @@
       <div class="home-trending-featured" [routerLink]="['/publication', trendingRecipes()[0]._id]">
         <div class="home-trending-featured-img-wrap">
           @if (getCover(trendingRecipes()[0])) {
-          <img [src]="getCover(trendingRecipes()[0])" [alt]="trendingRecipes()[0].title" class="home-trending-img"/>
+          <img [src]="getCover(trendingRecipes()[0])" [alt]="trendingRecipes()[0].title" class="home-trending-img" alt=""/>
           } @else {
           <div class="home-trending-img home-trending-img--placeholder"></div>
           }
@@ -65,7 +65,7 @@
                   <span>&#64;{{ (trendingRecipes()[0].user | asAny)?.nick }}</span>
                   @if ((trendingRecipes()[0].user | asAny)?.role === 'ROLE_VERIFIED' || (trendingRecipes()[0].user | asAny)?.role === 'ROLE_ADMIN') {
                     <span class="verified-wrap">
-                      <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                      <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
                     </span>
                   }
                 </div>
@@ -78,7 +78,7 @@
               [class.home-trending-like-btn--active]="isLiked(trendingRecipes()[0])"
               (click)="toggleLike(trendingRecipes()[0]._id, $event)">
               <img
-                [src]="isLiked(trendingRecipes()[0]) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                [src]="isLiked(trendingRecipes()[0]) ? 'assets/icons/corazon.svg' : 'assets/icons/corazon_line.svg'"
                 class="home-trending-stat-icon" alt="likes"/>
               <span>{{ trendingRecipes()[0].likes.length }}</span>
             </button>
@@ -86,12 +86,12 @@
                [routerLink]="['/publication', trendingRecipes()[0]._id]"
                fragment="comentarios"
                (click)="$event.stopPropagation()">
-              <img src="icons/chat-de-burbujas.svg" class="home-trending-stat-icon" alt="comentarios"/>
+              <img src="assets/icons/chat-de-burbujas.svg" class="home-trending-stat-icon" alt="comentarios"/>
               <span>{{ getCommentsCount(trendingRecipes()[0]) }}</span>
             </a>
             @if (trendingRecipes()[0].raciones) {
             <span class="home-trending-stat">
-              <img src="icons/usuarios.svg" class="home-trending-stat-icon" alt="raciones"/>
+              <img src="assets/icons/usuarios.svg" class="home-trending-stat-icon" alt="raciones"/>
               <span>{{ trendingRecipes()[0].raciones }}</span>
             </span>
             }
@@ -104,7 +104,7 @@
         <div class="home-trending-item" [routerLink]="['/publication', recipe._id]">
           <div class="home-trending-item-img-wrap">
             @if (getCover(recipe)) {
-            <img [src]="getCover(recipe)" [alt]="recipe.title" class="home-trending-img"/>
+            <img [src]="getCover(recipe)" [alt]="recipe.title" class="home-trending-img" alt=""/>
             } @else {
             <div class="home-trending-img home-trending-img--placeholder"></div>
             }
@@ -117,7 +117,7 @@
                 [class.home-trending-like-btn--active]="isLiked(recipe)"
                 (click)="toggleLike(recipe._id, $event)">
                 <img
-                  [src]="isLiked(recipe) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                  [src]="isLiked(recipe) ? 'assets/icons/corazon.svg' : 'assets/icons/corazon_line.svg'"
                   class="home-trending-stat-icon" alt="likes"/>
                 <span>{{ recipe.likes.length }}</span>
               </button>
@@ -125,7 +125,7 @@
                  [routerLink]="['/publication', recipe._id]"
                  fragment="comentarios"
                  (click)="$event.stopPropagation()">
-                <img src="icons/chat-de-burbujas.svg" class="home-trending-stat-icon" alt="comentarios"/>
+                <img src="assets/icons/chat-de-burbujas.svg" class="home-trending-stat-icon" alt="comentarios"/>
                 <span>{{ getCommentsCount(recipe) }}</span>
               </a>
             </div>
@@ -170,7 +170,7 @@
         <div class="home-hashtag-recipe-card" [routerLink]="['/publication', recipe._id]">
           <div class="home-hashtag-recipe-img-wrap">
             @if (getCover(recipe)) {
-            <img [src]="getCover(recipe)" [alt]="recipe.title" class="home-hashtag-recipe-img"/>
+            <img [src]="getCover(recipe)" [alt]="recipe.title" class="home-hashtag-recipe-img" alt=""/>
             } @else {
             <div class="home-hashtag-recipe-img home-hashtag-recipe-img--placeholder"></div>
             }
@@ -187,8 +187,8 @@
                 <span class="home-hashtag-recipe-nick">&#64;{{ (recipe.user | asAny)?.nick }}</span>
                 @if ((recipe.user | asAny)?.role === 'ROLE_VERIFIED' || (recipe.user | asAny)?.role === 'ROLE_ADMIN') {
                 <span class="verified-wrap">
-                          <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
-                        </span>
+                  <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                </span>
                 }
               </div>
             </div>
@@ -198,12 +198,12 @@
                 [class.home-trending-like-btn--active]="isLiked(recipe)"
                 (click)="toggleLike(recipe._id, $event)">
                 <img
-                  [src]="isLiked(recipe) ? 'icons/corazon.svg' : 'icons/corazon_line.svg'"
+                  [src]="isLiked(recipe) ? 'assets/icons/corazon.svg' : 'assets/icons/corazon_line.svg'"
                   class="home-hashtag-stat-icon" alt="likes"/>
                 <span>{{ recipe.likes.length }}</span>
               </button>
               <span class="home-hashtag-recipe-stat">
-                <img src="icons/chat-de-burbujas.svg" class="home-hashtag-stat-icon" alt="comentarios"/>
+                <img src="assets/icons/chat-de-burbujas.svg" class="home-hashtag-stat-icon" alt="comentarios"/>
                 <span>{{ getCommentsCount(recipe) }}</span>
               </span>
             </div>

@@ -35,9 +35,9 @@ export class HomeComponent implements OnInit {
   identity: any = this.authService.getIdentity();
 
   private readonly featuredHashtags: { tag: string; icon: string }[] = [
-    {tag: 'tradicional', icon: 'icons/miton_one_color.svg'},
-    {tag: 'saludable', icon: 'icons/verduras.svg'},
-    {tag: 'postre', icon: 'icons/pastel.svg'},
+    {tag: 'tradicional', icon: 'assets/icons/miton_one_color.svg'},
+    {tag: 'saludable', icon: 'assets/icons/verduras.svg'},
+    {tag: 'postre', icon: 'assets/icons/pastel.svg'},
   ];
 
   ngOnInit(): void {

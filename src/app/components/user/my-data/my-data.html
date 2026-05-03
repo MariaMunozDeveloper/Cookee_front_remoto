@@ -17,7 +17,7 @@
             }
 
             <label class="mydata-avatar-edit-btn" title="Cambiar foto">
-              <img src="icons/lapiz.svg" class="mydata-edit-icon" alt="editar foto"/>
+              <img src="assets/icons/lapiz.svg" class="mydata-edit-icon" alt="editar foto"/>
               <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden/>
             </label>
           </div>
@@ -28,7 +28,7 @@
               <p class="mydata-nick">&#64;{{ identity?.nick }}</p>
               @if (identity?.role === 'ROLE_VERIFIED' || identity?.role === 'ROLE_ADMIN') {
               <span class="verified-wrap">
-                  <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                  <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
                 </span>
               }
             </div>

@@ -1,7 +1,7 @@
 <div class="detail-page">
   @if (loading()) {
   <div class="page-container">
-    <app-loading-spinner/>
+    <app-loading-spinner></app-loading-spinner>
   </div>
   }
 
@@ -9,10 +9,10 @@
 
   <div class="detail-cover">
     @if (publication()!.images.length > 0) {
-    <img [src]="publication()!.images[0]" [alt]="publication()!.title" class="detail-cover-img"/>
+    <img [src]="publication()!.images[0]" [alt]="publication()!.title" class="detail-cover-img" alt=""/>
     } @else {
     <div class="detail-cover-placeholder">
-      <img src="icons/libro-de-cocina.svg" class="detail-placeholder-icon" alt="receta"/>
+      <img src="assets/icons/libro-de-cocina.svg" class="detail-placeholder-icon" alt="receta"/>
     </div>
     }
     <div class="detail-cover-overlay"></div>
@@ -35,7 +35,7 @@
             @if ((publication()!.user | asAny)?.role === 'ROLE_VERIFIED' || (publication()!.user | asAny)?.role ===
             'ROLE_ADMIN') {
             <span class="verified-wrap">
-              <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+              <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
             </span>
             }
           </div>
@@ -48,31 +48,31 @@
       <div class="detail-stats">
         @if (publication()!.raciones) {
         <span class="recipe-stat">
-          <img src="icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
+          <img src="assets/icons/usuarios.svg" class="recipe-stat-icon" alt="raciones"/>
           <strong>{{ publication()!.raciones }}</strong> raciones
         </span>
         }
         @if (publication()!.tiempoHorno) {
         <span class="recipe-stat">
-          <img src="icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
+          <img src="assets/icons/reloj.svg" class="recipe-stat-icon" alt="tiempo"/>
           <strong>{{ publication()!.tiempoHorno }}</strong> min
         </span>
         }
         @if (publication()!.temperaturaHorno) {
         <span class="recipe-stat">
-          <img src="icons/termometro_1.svg" class="recipe-stat-icon" alt="temperatura"/>
+          <img src="assets/icons/termometro_1.svg" class="recipe-stat-icon" alt="temperatura"/>
           <strong>{{ publication()!.temperaturaHorno }}</strong>°C
         </span>
         }
         @if (publication()!.ingredients.length) {
         <span class="recipe-stat">
-          <img src="icons/ingredientes.svg" class="recipe-stat-icon" alt="ingredientes"/>
+          <img src="assets/icons/ingredientes.svg" class="recipe-stat-icon" alt="ingredientes"/>
           <strong>{{ publication()!.ingredients.length }}</strong> ingredientes
         </span>
         }
         @if (publication()!.steps.length) {
         <span class="recipe-stat">
-          <img src="icons/cadena-de-valor.svg" class="recipe-stat-icon" alt="pasos"/>
+          <img src="assets/icons/cadena-de-valor.svg" class="recipe-stat-icon" alt="pasos"/>
           <strong>{{ publication()!.steps.length }}</strong> pasos
         </span>
         }
@@ -81,13 +81,13 @@
       <div class="detail-actions">
         @if (isLoggedIn) {
         <button class="detail-like-btn" [class.detail-like-btn-active]="hasLike()" (click)="toggleLike()">
-          <img [src]="hasLike() ? 'icons/corazon.svg' : 'icons/corazon_line.svg'" class="detail-like-icon"
+          <img [src]="hasLike() ? 'assets/icons/corazon.svg' : 'assets/icons/corazon_line.svg'" class="detail-like-icon"
                alt="like"/>
           {{ likesCount() }} me gusta
         </button>
         <button class="detail-favorite-btn" (click)="favoriteService.toggleFavorite(publication()!._id)">
           <img
-            [src]="favoriteService.isFavorite(publication()!._id) ? 'icons/favorito (1).svg' : 'icons/favorito.svg'"
+            [src]="favoriteService.isFavorite(publication()!._id) ? 'assets/icons/favorito (1).svg' : 'assets/icons/favorito.svg'"
             class="detail-favorite-icon" alt="favorito"/>
           {{ favoriteService.isFavorite(publication()!._id) ? 'Guardado' : 'Guardar' }}
         </button>
@@ -96,7 +96,7 @@
         @if (isMyPublication()) {
         <div class="detail-owner-actions">
           <a class="detail-edit-btn" [routerLink]="['/edit-recipe', publication()!._id]">
-            <img src="icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
+            <img src="assets/icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
             Editar receta
           </a>
           <button class="detail-delete-btn" (click)="confirmDelete()">Eliminar</button>
@@ -124,7 +124,7 @@
         }
         @if (isMyPublication()) {
         <button class="detail-rec-edit-trigger" (click)="startEditingIntro()">
-          <img src="icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
+          <img src="assets/icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
           Editar introducción
         </button>
         }
@@ -172,7 +172,7 @@
     <section class="detail-section">
       <div class="detail-section-box">
         <div class="detail-section-header">
-          <img src="icons/ingredientes.svg" class="detail-section-icon" alt="ingredientes"/>
+          <img src="assets/icons/ingredientes.svg" class="detail-section-icon" alt="ingredientes"/>
           <span class="detail-section-title">Ingredientes</span>
         </div>
         <ul class="detail-ingredients">
@@ -194,7 +194,7 @@
     <section class="detail-section">
       <div class="detail-section-box">
         <div class="detail-section-header">
-          <img src="icons/cadena-de-valor.svg" class="detail-section-icon" alt="pasos"/>
+          <img src="assets/icons/cadena-de-valor.svg" class="detail-section-icon" alt="pasos"/>
           <span class="detail-section-title">Elaboración</span>
         </div>
 
@@ -228,7 +228,7 @@
           </div>
           <div class="detail-locked-overlay">
             <div class="detail-locked-content">
-              <img src="icons/desbloquear.svg" class="detail-locked-icon" alt="desbloquear"/>
+              <img src="assets/icons/desbloquear.svg" class="detail-locked-icon" alt="desbloquear"/>
               <h3 class="detail-locked-title">Únete a Cookee para ver la receta completa</h3>
               <p class="detail-locked-text">Regístrate gratis y accede a todos los pasos, consejos y
                 comentarios.</p>
@@ -248,7 +248,7 @@
     <section class="detail-section">
       <div class="detail-section-box detail-section-box-tips">
         <div class="detail-section-header">
-          <img src="icons/miton_one_color.svg" class="detail-section-icon" alt="recomendaciones"/>
+          <img src="assets/icons/miton_one_color.svg" class="detail-section-icon" alt="recomendaciones"/>
           <span class="detail-section-title">Recomendaciones</span>
         </div>
 
@@ -265,7 +265,7 @@
         </div>
         @if (isMyPublication()) {
         <button class="detail-rec-edit-trigger" (click)="startEditingRecommendations()">
-          <img src="icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
+          <img src="assets/icons/tenedor.svg" class="detail-owner-icon" alt="editar"/>
           Editar recomendaciones
         </button>
         }
@@ -276,7 +276,7 @@
             <div class="detail-rec-row" [class.detail-rec-row--dragging]="dragIndex === $index"
                  draggable="true" (dragstart)="onDragStart($index)" (dragover)="onDragOver($event, $index)"
                  (dragend)="onDragEnd()">
-              <img src="icons/tenedor.svg" class="detail-rec-drag-icon" alt="arrastrar"/>
+              <img src="assets/icons/tenedor.svg" class="detail-rec-drag-icon" alt="arrastrar"/>
               <label>
                 <input class="input-base detail-rec-input" [value]="rec"
                        (input)="updateRecommendation($index, $any($event.target).value)"
@@ -291,11 +291,9 @@
           <button type="button" class="btn btn-ghost btn-sm detail-rec-add" (click)="addRecommendation()">
             + Añadir recomendación
           </button>
-
           @if (recommendationsError) {
           <p class="comment-error">{{ recommendationsError }}</p>
           }
-
           <div class="detail-rec-actions">
             <button type="button" class="btn btn-outline btn-sm" (click)="cancelEditingRecommendations()">
               Cancelar
@@ -317,7 +315,7 @@
     <section class="detail-section" id="comentarios">
       <div class="detail-section-box">
         <div class="detail-section-header">
-          <img src="icons/chat-de-burbujas.svg" class="detail-section-icon" alt="comentarios"/>
+          <img src="assets/icons/chat-de-burbujas.svg" class="detail-section-icon" alt="comentarios"/>
           <span class="detail-section-title">{{ comments().length }} Comentarios</span>
         </div>
 
@@ -357,7 +355,7 @@
                   <span class="comment-nick">&#64;{{ comment.user?.nick }}</span>
                   @if (comment.user?.role === 'ROLE_VERIFIED' || comment.user?.role === 'ROLE_ADMIN') {
                   <span class="verified-wrap">
-                    <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                    <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
                   </span>
                   }
                   @if (isPublicationAuthor(comment.user?._id)) {
@@ -393,7 +391,6 @@
                 </div>
               </div>
               }
-
               @if (comment.replies && comment.replies.length > 0) {
               <div class="comment-replies">
                 @for (reply of comment.replies; track reply._id) {
@@ -414,7 +411,7 @@
                         <span class="comment-nick">&#64;{{ reply.user?.nick }}</span>
                         @if (reply.user?.role === 'ROLE_VERIFIED' || reply.user?.role === 'ROLE_ADMIN') {
                         <span class="verified-wrap">
-                          <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+                          <img src="assets/icons/verificar.svg" class="verified-icon" alt="verificado"/>
                         </span>
                         }
                         @if (isPublicationAuthor(reply.user?._id)) {
@@ -438,7 +435,6 @@
                 }
               </div>
               }
-
             </div>
           </div>
           } @empty {
@@ -451,7 +447,6 @@
       <p><a routerLink="/register">Regístrate</a> para ver y escribir comentarios.</p>
     </div>
     }
-
   </div>
 
   @if (showDeleteCommentModal()) {
@@ -476,5 +471,4 @@
   </app-confirm-modal>
   }
   }
-
 </div>
