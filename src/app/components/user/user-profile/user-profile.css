@@ -173,7 +173,7 @@
 
 .profile-name {
   font-family: var(--font-heading);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0;
 }
@@ -218,6 +218,11 @@
   display: flex;
   gap: var(--space-sm);
   margin-left: auto;
+}
+
+.profile-actions .btn {
+  font-size: 13px;
+  min-height: 34px;
 }
 
 .profile-recipe-cover {

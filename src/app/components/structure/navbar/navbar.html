@@ -33,34 +33,17 @@
       }
 
       @if (identity) {
-      <a class="btn btn-primary btn-sm navbar-create-btn" routerLink="/create-recipe">+ Receta</a>
-
-      <div class="navbar-user-menu">
-        <button class="navbar-user-btn" (click)="toggleUserMenu()">
-          @if (identity.image) {
-          <img [src]="identity.image" alt="avatar" class="navbar-avatar"/>
-          } @else {
-          <div class="navbar-avatar navbar-avatar-placeholder"></div>
-          }
-          <span class="navbar-user-nick">{{ identity.nick }}</span>
-          <span class="navbar-chevron">▾</span>
-        </button>
-
-        @if (showUserMenu) {
-        <div class="navbar-dropdown">
-          <a class="navbar-dropdown-link" [routerLink]="['/profile', identity._id]" (click)="closeUserMenu()">
-            Mi perfil
-          </a>
-          <a class="navbar-dropdown-link" routerLink="/my-data" (click)="closeUserMenu()">
-            Mis datos
-          </a>
-          <hr class="navbar-dropdown-divider"/>
-          <button class="navbar-dropdown-link navbar-dropdown-btn" (click)="logout()">
-            Cerrar sesión
-          </button>
-        </div>
+      <a class="navbar-avatar-link" [routerLink]="['/profile', identity._id]">
+        @if (identity.image) {
+        <img [src]="identity.image" alt="avatar" class="navbar-avatar"/>
+        } @else {
+        <div class="navbar-avatar navbar-avatar-placeholder"></div>
         }
-      </div>
+      </a>
+
+      <button class="navbar-logout-icon-btn" (click)="logout()" title="Cerrar sesión">
+        <img src="icons/cerrar-sesion.svg" class="navbar-logout-icon" alt="cerrar sesión"/>
+      </button>
       }
     </div>
 
@@ -74,13 +57,30 @@
 
   @if (showMobileMenu) {
   <div class="navbar-mobile-menu">
+
+    @if (identity) {
+    <a class="navbar-mobile-user" [routerLink]="['/profile', identity._id]" (click)="closeMobileMenu()">
+      @if (identity.image) {
+      <img [src]="identity.image" alt="avatar" class="navbar-mobile-avatar"/>
+      } @else {
+      <div class="navbar-mobile-avatar navbar-mobile-avatar--placeholder"></div>
+      }
+      <div class="navbar-mobile-user-info">
+        <p class="navbar-mobile-user-name">{{ identity.name }} {{ identity.surname }}</p>
+        <p class="navbar-mobile-user-nick">&#64;{{ identity.nick }}</p>
+      </div>
+    </a>
+    <hr class="navbar-mobile-divider"/>
+    }
+
     <a class="navbar-mobile-link" routerLink="/explore" routerLinkActive="navbar-mobile-link--active"
-       (click)="closeMobileMenu()">Explorar</a>
+       (click)="closeMobileMenu()">ParaTi</a>
     <a class="navbar-mobile-link" routerLink="/people" routerLinkActive="navbar-mobile-link--active"
        (click)="closeMobileMenu()">Cocinillas</a>
+
     @if (identity) {
     <a class="navbar-mobile-link" routerLink="/feed" routerLinkActive="navbar-mobile-link--active"
-       (click)="closeMobileMenu()">ParaTi</a>
+       (click)="closeMobileMenu()">Inicio</a>
     <a class="navbar-mobile-link navbar-link-messages" routerLink="/messages"
        routerLinkActive="navbar-mobile-link--active" (click)="closeMobileMenu()">
       Mensajes
@@ -90,8 +90,6 @@
     </a>
     <a class="navbar-mobile-link" routerLink="/create-recipe" routerLinkActive="navbar-mobile-link--active"
        (click)="closeMobileMenu()">+ Nueva receta</a>
-    <a class="navbar-mobile-link" [routerLink]="['/profile', identity._id]" (click)="closeMobileMenu()">Mi
-      perfil</a>
     <a class="navbar-mobile-link" routerLink="/my-data" (click)="closeMobileMenu()">Mis datos</a>
     @if (identity?.role === 'ROLE_ADMIN') {
     <a class="navbar-mobile-link" routerLink="/admin" (click)="closeMobileMenu()">Admin</a>
@@ -107,3 +105,4 @@
   }
 
 </nav>
+
