@@ -281,6 +281,12 @@
   width: 100%;
 }
 
+.navbar-mobile-user .people-nick-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 @media (max-width: 768px) {
   .navbar-menu { display: none; }
   .navbar-actions { display: none; }

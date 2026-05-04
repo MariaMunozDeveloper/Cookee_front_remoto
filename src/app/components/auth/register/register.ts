@@ -19,6 +19,8 @@ export class RegisterComponent {
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
   private readonly router: Router = inject(Router);
 
+  showPassword: boolean = false;
+
   registerForm: FormGroup = this.formBuilder.group({
     name: ['', [Validators.required, FormValidators.notOnlyWhiteSpace]],
     surname: ['', [Validators.required, FormValidators.notOnlyWhiteSpace]],
@@ -65,5 +67,9 @@ export class RegisterComponent {
       error: () => {
       }
     });
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }
