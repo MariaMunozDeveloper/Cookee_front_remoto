@@ -67,7 +67,12 @@
       }
       <div class="navbar-mobile-user-info">
         <p class="navbar-mobile-user-name">{{ identity.name }} {{ identity.surname }}</p>
-        <p class="navbar-mobile-user-nick">&#64;{{ identity.nick }}</p>
+        <div class="people-nick-wrap">
+          <span class="navbar-mobile-user-nick">&#64;{{ identity.nick }}</span>
+          @if (identity?.role === 'ROLE_VERIFIED' || identity?.role === 'ROLE_ADMIN') {
+          <img src="icons/verificar.svg" class="verified-icon" alt="verificado"/>
+          }
+        </div>
       </div>
     </a>
     <hr class="navbar-mobile-divider"/>
