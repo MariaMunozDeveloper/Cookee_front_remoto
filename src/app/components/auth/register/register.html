@@ -96,9 +96,17 @@
 
           <div class="form-group">
             <label class="form-label">Contraseña</label>
-            <label>
-              <input type="password" class="input-base" formControlName="password" placeholder="Crea una contraseña"/>
-            </label>
+            <div class="password-wrapper">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                class="input-base"
+                formControlName="password"
+                placeholder="Crea una contraseña"/>
+              <button type="button" class="password-toggle" (click)="togglePassword()">
+                <img [src]="showPassword ? 'assets/icons/ojo_blocked.svg' : 'assets/icons/ojo.svg'"
+                     class="password-toggle-icon" alt="ver contraseña"/>
+              </button>
+            </div>
 
             @if (registerForm.get('password')?.touched) {
             <div class="form-error">

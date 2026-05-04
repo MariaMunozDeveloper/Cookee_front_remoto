@@ -100,3 +100,8 @@
 .password-toggle:hover .password-toggle-icon {
   opacity: 1;
 }
+
+.password-wrapper .input-base {
+  width: 100%;
+  padding-right: 44px;
+}
