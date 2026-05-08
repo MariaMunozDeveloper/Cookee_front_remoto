@@ -17,6 +17,12 @@
   max-width: 520px;
 }
 
+.home-trending-featured,
+.home-trending-item,
+.home-hashtag-recipe-card {
+  cursor: pointer;
+}
+
 .home-hero-eyebrow {
   font-size: 12px;
   font-weight: 600;
