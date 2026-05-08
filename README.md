@@ -1,72 +1,76 @@
 ﻿# Cookee
 
-Red social de recetas. TFC Maria Muñoz Ferrer — Ciclo Superior DAW 2024-25.
+> Red social de recetas — PFC · Maria Muñoz Ferrer · DAW 2025-26
 
-##  Ver en producción
-https://cookee-front-remoto.vercel.app
+Una plataforma donde los amantes de la cocina publican recetas, siguen a otros usuarios y construyen su recetario personal. Combina la profundidad de un blog de cocina con la interacción de una red social.
 
-## Tecnologías
+**Producción →** https://cookee-front-remoto.vercel.app
 
-- Frontend: Angular 21 
-- Backend: Node.js 22 + Express
-- Base de datos: MongoDB Atlas (cloud)
-- Almacenamiento de imágenes: Cloudinary
-- Autenticación: JWT
+---
 
-## Requisitos previos
+## Stack
 
-- Node.js v22 o superior
-- Angular CLI v21
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | Angular 21 · Standalone Components · Signals |
+| Backend | Node.js 20 · Express · API REST |
+| Base de datos | MongoDB Atlas |
+| Imágenes | Cloudinary |
+| Autenticación | JWT · Access token + Refresh token |
+
+---
+
+## Arranque local
+
+Requisitos: `Node.js v20` · `Angular CLI v21`
 
 ```bash
 npm install -g @angular/cli
 ```
 
-## Instalación y arranque
-
-### Backend
-
 ```bash
-cd api
+# 1. Backend
+cd FUENTES/CookeeBack
 npm install
 npm run dev
-```
+# → http://localhost:3000
 
-El backend estará disponible en `http://localhost:3000`
-
-### Frontend
-
-```bash
+# 2. Frontend (nueva terminal)
+cd FUENTES/CookeeFront
 npm install
 npm start
+# → http://localhost:4200
 ```
 
-La aplicación estará disponible en `http://localhost:4200`
+El archivo `.env` ya está incluido en `FUENTES/CookeeBack/` con todas las credenciales configuradas.
 
-## Variables de entorno
-
-Se adjunta el archivo `.env` en la carpeta `api/` con todas las credenciales necesarias (MongoDB Atlas, Cloudinary, JWT secret). No es necesario configurar nada adicional.
-
+---
 
 ## Base de datos
 
-La base de datos está en MongoDB Atlas y el `.env` ya viene configurado para conectarse directamente, no es necesario instalar MongoDB en local.
+La app usa MongoDB Atlas. El archivo `.env` incluido ya tiene la conexión configurada — no es necesario instalar nada adicional.
 
-Si prefieres usar una copia local, importa los datos de la carpeta `BBDD/`:
+### Opción alternativa: base de datos en local
+
+Si no hay conexión a internet o prefieres ejecutar la BD localmente:
+
+1. Instala MongoDB Community Server v8: https://www.mongodb.com/try/download/community
+
+2. Desde la carpeta raíz del proyecto (`Maria_Muñoz_Ferrer/`), importa los datos:
 
 ```bash
 mongorestore --db cookee ./BBDD/Cookee
 ```
 
-Y cambia `MONGODB_URI` en el `.env` a `mongodb://localhost:27017/cookee`
+3. Cambia la línea `MONGODB_URI` en `FUENTES/CookeeBack/.env` por :
 
+            MONGODB_URI=mongodb://localhost:27017/cookee
 
-## Credenciales de acceso
+4. Arranca el backend y el frontend siguiendo los pasos de **Arranque local**.
 
-**Usuario normal:**
-- Email: laura@cookee.com
-- Contraseña: password123
+---
 
-**Usuario administrador** (acceso al panel de admin):
-- Email: maria.munoz@solvam.es
-- Contraseña: admin123
+## Acceso
+
+Usuario:  maria.munoz@solvam.es
+Contraseña:  admin123 
