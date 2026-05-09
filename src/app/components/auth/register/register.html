@@ -22,6 +22,9 @@
               @if (registerForm.get('name')?.errors?.['required']) {
               <span>El nombre es obligatorio</span>
               }
+              @if (registerForm.get('name')?.errors?.['forbiddenWords']) {
+              <span>El nombre contiene una palabra no permitida</span>
+              }
               @if (registerForm.get('name')?.errors?.['notOnlyWhiteSpace']) {
               <span>No puede contener solo espacios</span>
               }
@@ -39,6 +42,9 @@
             <div class="form-error">
               @if (registerForm.get('surname')?.errors?.['required']) {
               <span>Los apellidos son obligatorios</span>
+              }
+              @if (registerForm.get('surname')?.errors?.['forbiddenWords']) {
+              <span>Los apellidos contiene una palabra no permitida</span>
               }
               @if (registerForm.get('surname')?.errors?.['notOnlyWhiteSpace']) {
               <span>No puede contener solo espacios</span>

@@ -4,6 +4,7 @@ import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '../../../services/authService';
 import {UserService} from '../../../services/userService';
 import {FormValidators} from '../../../validators/formValidators';
+import {FORBIDDEN_WORDS} from '../../../validators/forbidden-words';
 import {User} from '../../../common/interfaces/user';
 
 @Component({
@@ -22,8 +23,8 @@ export class RegisterComponent {
   showPassword: boolean = false;
 
   registerForm: FormGroup = this.formBuilder.group({
-    name: ['', [Validators.required, FormValidators.notOnlyWhiteSpace]],
-    surname: ['', [Validators.required, FormValidators.notOnlyWhiteSpace]],
+    name: ['', [Validators.required, FormValidators.notOnlyWhiteSpace, FormValidators.forbiddenWords(FORBIDDEN_WORDS)]],
+    surname: ['', [Validators.required, FormValidators.notOnlyWhiteSpace, FormValidators.forbiddenWords(FORBIDDEN_WORDS)]],
     nick: ['', [Validators.required, Validators.minLength(3), FormValidators.notOnlyWhiteSpace, FormValidators.forbiddenWord('admin')]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6), FormValidators.notOnlyWhiteSpace]]
