@@ -27,3 +27,35 @@
   font-weight: 600;
   margin-top: var(--space-md);
 }
+
+.send-success-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.send-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-text-soft);
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.send-back-link:hover {
+  color: var(--color-primary);
+}
+
+.send-back-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.send-back-avatar--placeholder {
+  background-color: var(--color-primary-light);
+}

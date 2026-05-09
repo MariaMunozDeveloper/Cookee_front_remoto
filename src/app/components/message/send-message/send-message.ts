@@ -1,13 +1,14 @@
 import {inject, Component, signal, WritableSignal, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
 import {MessageService} from '../../../services/messageService';
 import {UserService} from '../../../services/userService';
 
 @Component({
   selector: 'app-send-message',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './send-message.html',
   styleUrl: './send-message.css'
 })
