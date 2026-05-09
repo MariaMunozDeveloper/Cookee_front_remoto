@@ -7,7 +7,17 @@
     </h1>
 
     @if (sent) {
-    <p class="send-success">¡Mensaje enviado correctamente!</p>
+    <div class="send-success-wrap">
+      <p class="send-success">¡Mensaje enviado correctamente!</p>
+      <a class="send-back-link" [routerLink]="['/profile', receiver()?._id]">
+        @if (receiver()?.image) {
+        <img [src]="receiver()!.image" class="send-back-avatar" alt="avatar"/>
+        } @else {
+        <div class="send-back-avatar send-back-avatar--placeholder"></div>
+        }
+        <span>Volver al perfil de <strong>&#64;{{ receiver()?.nick }}</strong></span>
+      </a>
+    </div>
     }
 
     @if (!sent) {
