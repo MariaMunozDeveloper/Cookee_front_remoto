@@ -46,8 +46,6 @@ export class RegisterComponent {
           password: user.password!
         }).subscribe({
           next: (response) => {
-            localStorage.setItem('token', response.accessToken);
-            localStorage.setItem('refreshToken', response.refreshToken);
             this.authService.setIdentity(response.user);
 
             this.userService.getCounters().subscribe({

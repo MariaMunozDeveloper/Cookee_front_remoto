@@ -27,7 +27,7 @@ export class PublicationDetailComponent implements OnInit {
   readonly favoriteService: FavoriteService = inject(FavoriteService);
 
   identity: any = this.authService.getIdentity();
-  isLoggedIn: boolean = !!this.authService.getToken();
+  isLoggedIn: boolean = !!this.authService.getIdentity();
 
   publication: WritableSignal<Publication | null> = signal<Publication | null>(null);
   commentToDeleteParent: string | undefined = undefined;

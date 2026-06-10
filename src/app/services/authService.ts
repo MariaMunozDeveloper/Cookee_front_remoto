@@ -30,14 +30,6 @@ export class AuthService {
     return null;
   }
 
-  getToken(): string | null {
-    const token = localStorage.getItem('token');
-    if (token && token !== 'undefined') {
-      return token;
-    }
-    return null;
-  }
-
   setIdentity(user: any): void {
     localStorage.setItem('user', JSON.stringify(user));
     this.identitySubject.next(user);

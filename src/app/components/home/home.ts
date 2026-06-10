@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   hashtagSections: WritableSignal<HashtagSection[]> = signal<HashtagSection[]>([]);
   loaded: WritableSignal<boolean> = signal<boolean>(false);
 
-  isLoggedIn: boolean = !!this.authService.getToken();
+  isLoggedIn: boolean = !!this.authService.getIdentity();
   identity: any = this.authService.getIdentity();
 
   private readonly featuredHashtags: { tag: string; icon: string }[] = [

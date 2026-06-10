@@ -29,7 +29,7 @@ export class ExploreComponent implements OnInit {
   page: number = 1;
   totalPages: number = 1;
   hasMore: boolean = true;
-  isLoggedIn: boolean = !!this.authService.getToken();
+  isLoggedIn: boolean = !!this.authService.getIdentity();
   identity: any = this.authService.getIdentity();
 
   sortBy: string = 'recent';

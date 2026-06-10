@@ -19,7 +19,7 @@ export class PeopleComponent implements OnInit {
   private readonly followService: FollowService = inject(FollowService);
   private readonly authService: AuthService = inject(AuthService);
 
-  isLoggedIn: boolean = !!this.authService.getToken();
+  isLoggedIn: boolean = !!this.authService.getIdentity();
   users: WritableSignal<any[]> = signal<any[]>([]);
   loading: WritableSignal<boolean> = signal<boolean>(false);
 

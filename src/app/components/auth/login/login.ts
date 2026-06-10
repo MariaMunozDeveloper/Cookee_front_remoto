@@ -43,8 +43,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.accessToken);
-        localStorage.setItem('refreshToken', response.refreshToken);
         this.authService.setIdentity(response.user);
 
         this.userService.getCounters().subscribe({
