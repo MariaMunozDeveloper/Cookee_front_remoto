@@ -50,11 +50,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     this.identitySubject.next(null);
   }
-
-
 }
