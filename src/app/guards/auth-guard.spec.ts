@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { authGuard } from './auth-guard';
+import { vi } from 'vitest';
 
 describe('authGuard', () => {
   let router: Router;
@@ -36,6 +37,17 @@ describe('authGuard', () => {
     );
 
     expect(resultado).toBe(true);
+  });
+
+  it('debería redirigir a /login si no hay usuario en localStorage', () => {
+    const spy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    const resultado = TestBed.runInInjectionContext(() =>
+      authGuard(routeMock, stateMock)
+    );
+
+    expect(resultado).toBe(false);
+    expect(spy).toHaveBeenCalledWith(['/login']);
   });
 
 });
